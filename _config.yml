@@ -1,17 +1,42 @@
-# Thiết lập cơ bản cho GitHub Pages
+# ====================================
+# Thiết lập Cấu hình Cốt lõi (Jekyll Core)
+# ====================================
 
-# 1. Tên Theme Bắt Buộc (Sử dụng remote_theme cho GitHub Pages)
+# 1. Cấu hình Tên miền và Đường dẫn (QUAN TRỌNG)
+# url: Đặt tên miền đầy đủ. Đổi "tentaikhoan" thành tên người dùng của bạn.
+url: "https://agripathlife.github.io"
+# baseurl: Đặt đường dẫn cơ sở nếu trang web KHÔNG nằm ở thư mục gốc. 
+# Vì đây là User Page (tentaikhoan.github.io), nó nằm ở gốc, nên để trống.
+baseurl: "" 
+# Ví dụ: Nếu là Project Page, baseurl sẽ là "/ten-repo"
+
+# 2. Thiết lập Theme (BẮT BUỘC cho GitHub Pages)
 remote_theme: pages-themes/architect@v0.2.0
 
-# 2. Tiêu đề và Mô tả
-# Tiêu đề sẽ xuất hiện trên tab trình duyệt và tiêu đề chính của trang
-title: Trang Web Cá Nhân Của Bạn
-description: Đây là trang giới thiệu và portfolio tuyệt vời được xây dựng với theme Architect.
+# 3. Tiêu đề và Mô tả
+title: Portfolio Của Mình
+description: Nơi trưng bày các dự án và thông tin cá nhân.
 
-# 3. Cấu hình Màu sắc (Optional - Thường không cần thiết cho Architect)
-# show_downloads: true # Bật/Tắt nút download repo (Nếu bạn muốn hiển thị)
+# ====================================
+# Cấu hình Mặc định Theme & Plugins
+# ====================================
 
-# 4. Cài đặt Jekyll cơ bản
+# 4. Plugins (Cần thiết cho GitHub Pages)
 plugins:
   - jekyll-remote-theme
-  - jekyll-seo-tag
+  - jekyll-seo-tag # Rất quan trọng cho SEO
+  - jekyll-feed 
+
+# 5. Cài đặt hiển thị (Đặc trưng của theme Architect)
+# show_downloads: true # Bật/Tắt nút "Download Source Code" (true/false)
+
+# 6. Thiết lập Build
+# Exclude: Danh sách các thư mục/file không được xử lý bởi Jekyll
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/

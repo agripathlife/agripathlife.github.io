@@ -12,6 +12,6 @@
   "githubRepo": "agripathlife.github.io",
   "pagesUrl": "https://agripathlife.github.io",
   "themeMode": "dark",
-  "postsDirectory": "_posts",
+  "postsDirectory": "src/content/bai_viet",
   "authorAvatar": "https://avatars.githubusercontent.com/u/246151016?v=4"
 }

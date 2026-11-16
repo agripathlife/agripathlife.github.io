@@ -1,0 +1,120 @@
+---
+import {
+  estimateReadingTime,
+  formatVietnameseDate,
+  getPostCover,
+  getPostDate,
+  getPostExcerpt,
+  getPostSlug,
+  getPostTitle,
+  withBase,
+} from '../utils/url';
+
+interface Props {
+  entry: any;
+  routePrefix?: string;
+}
+
+const { entry, routePrefix = '/bai-viet' } = Astro.props;
+const slug = getPostSlug(entry);
+const href = withBase(`${routePrefix}/${slug}/`);
+const title = getPostTitle(entry);
+const date = getPostDate(entry);
+const excerpt = getPostExcerpt(entry);
+const cover = getPostCover(entry);
+const category = String(entry.data?.danh_muc || entry.data?.category || 'Bài viết');
+const minutes = estimateReadingTime(entry.body || '');
+---
+
+<article class="post-card" data-search={`${title} ${excerpt} ${category}`.toLowerCase()}>
+  <a class="post-card-link" href={href}>
+    {cover && (
+      <div class="post-cover-wrap">
+        <img src={cover} alt={title} loading="lazy" />
+      </div>
+    )}
+    <div class="post-body">
+      <div class="post-meta">
+        <span>{formatVietnameseDate(date)}</span>
+        <span>·</span>
+        <span>{category}</span>
+        <span>·</span>
+        <span>{minutes} phút đọc</span>
+      </div>
+      <h3 class="post-title">{title}</h3>
+      <p class="post-excerpt">{excerpt}</p>
+    </div>
+  </a>
+</article>
+
+<style>
+  .post-card {
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.18s ease, border-color 0.18s ease;
+  }
+
+  .post-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--link);
+  }
+
+  .post-card-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    color: inherit;
+    text-decoration: none !important;
+  }
+
+  .post-cover-wrap {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .post-cover-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .post-body {
+    padding: 18px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--muted);
+  }
+
+  .post-title {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    line-height: 1.35;
+    color: var(--text);
+  }
+
+  .post-excerpt {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-2);
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

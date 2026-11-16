@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getPostDate } from '../../utils/url';
+
+const entries = (await getCollection('sach'))
+  .filter((e) => !e.data.nhap && !e.data.draft)
+  .sort((a, b) => getPostDate(b).localeCompare(getPostDate(a)));
+---
+
+<BaseLayout title="Sách & Tài liệu" description="Ghi chú đọc sách, tóm tắt tài liệu và ấn phẩm hay.">
+  <div class="col-header">
+    <h1>Sách & Tài liệu</h1>
+    <p>Ghi chú đọc sách, tóm tắt tài liệu và ấn phẩm hay.</p>
+  </div>
+
+  {entries.length === 0 ? (
+    <p style="color: var(--muted);">Chưa có mục nào trong danh mục này.</p>
+  ) : (
+    <div class="col-grid">
+      {entries.map((entry) => (
+        <PostCard entry={entry} routePrefix="/sach" />
+      ))}
+    </div>
+  )}
+</BaseLayout>
+
+<style>
+  .col-header {
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .col-header h1 {
+    margin: 0 0 8px;
+    font-family: var(--font-display);
+    font-size: 2rem;
+  }
+  .col-header p {
+    margin: 0;
+    color: var(--text-2);
+  }
+  .col-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  @media (min-width: 720px) {
+    .col-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

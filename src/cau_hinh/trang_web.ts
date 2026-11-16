@@ -20,7 +20,7 @@ export interface SiteIdentityConfig {
 }
 
 export const SITE_CONFIG: SiteIdentityConfig = {
-  "siteTitle": "Nhật ký một gã khờ",
+  "siteTitle": "Giữa nhân gian, ngắm vạn vật.",
   "tagline": "Nhật ký một gã khờ.",
   "siteIcon": "/favicon.png",
   "headerTitle": "Hạ Vũ",

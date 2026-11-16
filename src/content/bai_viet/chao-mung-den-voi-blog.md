@@ -1,5 +1,5 @@
 ---
-tieu_de: Chào mừng đến với agripathlife.github.io
+tieu_de: Chào mừng đến với Hạ Vũ
 danh_muc: Ghi chép
 chuyen_muc: ghi-chep
 slug: chao-mung-den-voi-blog
@@ -7,7 +7,7 @@ tags:
   - astro
   - blogvn
   - github-pages
-mo_ta: Bài viết khởi đầu của agripathlife.github.io, triển khai sạch bằng Astro Blog Việt kết hợp nhận dạng web cá nhân.
+mo_ta: Bài viết khởi đầu của Hạ Vũ, triển khai sạch bằng Astro Blog Việt kết hợp nhận dạng web cá nhân.
 ngay: '2026-11-16'
 anh_bia: /tainguyen/hinhanh/og-default.svg
 nhap: false
@@ -15,7 +15,7 @@ nhap: false
 
 ## Xin chào bạn đọc
 
-Chào mừng bạn ghé thăm **agripathlife.github.io** — không gian ghi chép cá nhân do **Hạ Vũ** biên soạn và xuất bản tự động lên GitHub Pages thông qua Astro.
+Chào mừng bạn ghé thăm **Hạ Vũ** — không gian ghi chép cá nhân do **Hạ Vũ** biên soạn và xuất bản tự động lên GitHub Pages thông qua Astro.
 
 ## Điểm nổi bật của mẫu blog này
 

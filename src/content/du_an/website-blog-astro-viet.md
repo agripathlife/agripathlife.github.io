@@ -1,5 +1,5 @@
 ---
-tieu_de: Website agripathlife.github.io trên Astro & GitHub Pages
+tieu_de: Website Hạ Vũ trên Astro & GitHub Pages
 mo_ta_ngan: Hệ thống blog tĩnh tiếng Việt hỗ trợ xuất bản Markdown trực tiếp từ BlogVN.
 anh_dai_dien: /tainguyen/hinhanh/og-default.svg
 cong_nghe:

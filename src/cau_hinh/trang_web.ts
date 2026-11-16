@@ -20,10 +20,10 @@ export interface SiteIdentityConfig {
 }
 
 export const SITE_CONFIG: SiteIdentityConfig = {
-  "siteTitle": "Hạ Vũ",
+  "siteTitle": "Nhật ký một gã khờ",
   "tagline": "Nhật ký một gã khờ.",
   "siteIcon": "/favicon.png",
-  "headerTitle": "BlogVN",
+  "headerTitle": "Hạ Vũ",
   "headerNavLinks": [],
   "footerText": "Xuất bản trực tiếp qua GitHub Pages & BlogVN.",
   "footerLinks": [],

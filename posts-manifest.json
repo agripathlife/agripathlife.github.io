@@ -1,0 +1,84 @@
+{
+  "owner": "agripathlife",
+  "repo": "agripathlife.github.io",
+  "posts": [
+    {
+      "id": "d791e593f26ceea0b613634b9c26461efdc622a8",
+      "path": "src/content/bai_viet/cach-viet-markdown-gon-gang.md",
+      "slug": "cach-viet-markdown-gon-gang",
+      "title": "Ghi chép về cách viết Markdown gọn gàng và bền vững",
+      "date": "2026-11-16",
+      "category": "Kỹ thuật",
+      "tags": [
+        "markdown",
+        "viet-lach",
+        "quy-trinh"
+      ],
+      "excerpt": "Vì sao định dạng Markdown thuần túy kết hợp GitHub Pages giúp bạn làm chủ hoàn toàn nội dung suốt nhiều năm.",
+      "cover": "https://agripathlife.github.io/tainguyen/hinhanh/og-default.svg",
+      "markdownBody": "## Nội dung tách rời khỏi nền tảng\n\nKhi viết bằng Markdown, mỗi bài viết chỉ là một tệp văn bản đơn giản. Bạn có thể chuyển đổi công cụ bất cứ lúc nào mà không bao giờ bị khóa dữ liệu.\n\n### Ba thói quen giúp bài viết dễ đọc\n\n1. Đặt tiêu đề mục rõ ràng bằng thẻ `##` và `###`.\n2. Giữ đoạn văn ngắn từ 2–4 câu để đọc thoải mái trên cả điện thoại.\n3. Tối ưu mô tả ngắn và thuộc tính Alt cho hình ảnh minh họa."
+    },
+    {
+      "id": "2ff1ed222fcb7515d81895c5daeeaed037c98791",
+      "path": "src/content/bai_viet/chao-mung-den-voi-blog.md",
+      "slug": "chao-mung-den-voi-blog",
+      "title": "Chào mừng đến với Hạ Vũ",
+      "date": "2026-11-16",
+      "category": "Ghi chép",
+      "tags": [
+        "astro",
+        "blogvn",
+        "github-pages"
+      ],
+      "excerpt": "Bài viết khởi đầu của Hạ Vũ, triển khai sạch bằng Astro Blog Việt kết hợp nhận dạng web cá nhân.",
+      "cover": "https://agripathlife.github.io/tainguyen/hinhanh/og-default.svg",
+      "markdownBody": "## Xin chào bạn đọc\n\nChào mừng bạn ghé thăm **Hạ Vũ** — không gian ghi chép cá nhân do **Hạ Vũ** biên soạn và xuất bản tự động lên GitHub Pages thông qua Astro.\n\n## Điểm nổi bật của mẫu blog này\n\n- **Tải siêu nhanh**: Toàn bộ trang được biên dịch tĩnh 100% bằng Astro 5, tối ưu cho tốc độ và SEO tiếng Việt.\n- **Nhận dạng cá nhân đồng bộ**: Tiêu đề, biểu tượng, Header, Footer và màu sắc Âm/Dương đều bám sát cấu hình bạn đã thiết lập trong BlogVN.\n- **Chủ quyền dữ liệu tuyệt đối**: Mọi bài viết được lưu dưới dạng tệp Markdown thuần túy ngay trong Git repository của riêng bạn.\n\n> Chúc bạn có những trang viết mạch lạc, sâu sắc và bền vững theo thời gian."
+    },
+    {
+      "id": "b82d0240d6b8d01759e978e7a2084933dac4cd33",
+      "path": "src/content/cua_hang/bo-mau-bai-viet-markdown.md",
+      "slug": "bo-mau-bai-viet-markdown",
+      "title": "Bộ mẫu bài viết Markdown chuẩn SEO tiếng Việt",
+      "date": "2026-11-16",
+      "category": "Cửa hàng",
+      "tags": [
+        "Tài nguyên số"
+      ],
+      "excerpt": "Khung cấu trúc bài viết sẵn sàng cho blog cá nhân, trang dự án và nhật ký đọc sách.",
+      "cover": "https://agripathlife.github.io/tainguyen/hinhanh/og-default.svg",
+      "markdownBody": "## Bao gồm trong bộ tài nguyên\n\n- Cấu trúc mở bài đặt vấn đề tự nhiên.\n- Checklist tiêu đề, mô tả Meta và thẻ chia sẻ mạng xã hội."
+    },
+    {
+      "id": "d6f68108ef92e20d98e5ff05e08352ef68632b6a",
+      "path": "src/content/du_an/website-blog-astro-viet.md",
+      "slug": "website-blog-astro-viet",
+      "title": "Website Hạ Vũ trên Astro & GitHub Pages",
+      "date": "2026-11-16",
+      "category": "Dự án",
+      "tags": [
+        "Astro 5",
+        "TypeScript",
+        "GitHub Actions",
+        "GitHub Pages"
+      ],
+      "excerpt": "Hệ thống blog tĩnh tiếng Việt hỗ trợ xuất bản Markdown trực tiếp từ BlogVN.",
+      "cover": "https://agripathlife.github.io/tainguyen/hinhanh/og-default.svg",
+      "markdownBody": "## Tổng quan dự án\n\nDự án này được khởi tạo tự động bằng bộ mẫu **Astro Blog Việt**, tích hợp sẵn RSS, Sitemap, tìm kiếm tức thì và giao diện Âm/Dương."
+    },
+    {
+      "id": "0cb6e5325bc0467f7aaa7b6fac9a49fd30012b0d",
+      "path": "src/content/sach/so-tay-viet-lach-mach-lac.md",
+      "slug": "so-tay-viet-lach-mach-lac",
+      "title": "Sổ tay viết lách mạch lạc cho người làm kỹ thuật",
+      "date": "2026-11-16",
+      "category": "Sách",
+      "tags": [
+        "Kỹ năng viết",
+        "Tư duy"
+      ],
+      "excerpt": "Tổng hợp những ghi chú về cấu trúc lập luận, đặt vấn đề và trình bày tài liệu rõ ràng.",
+      "cover": "https://agripathlife.github.io/tainguyen/hinhanh/og-default.svg",
+      "markdownBody": "## Nội dung trọng tâm\n\nGhi chép những nguyên tắc đơn giản nhưng hiệu quả giúp truyền đạt ý tưởng phức tạp một cách dễ hiểu nhất."
+    }
+  ]
+}

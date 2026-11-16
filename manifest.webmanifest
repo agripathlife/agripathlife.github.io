@@ -1,0 +1,16 @@
+{
+  "name": "Nhật ký một gã khờ",
+  "short_name": "Hạ Vũ",
+  "description": "Nhật ký một gã khờ.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#FAFAFA",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "./favicon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -9,7 +9,7 @@ tags:
   - markdown
 mo_ta: Tổng hợp nguyên tắc thiết kế hệ thống nhẹ, dễ bảo trì và triển khai trực tiếp trên GitHub Pages.
 ngay: '2026-11-16'
-anh_bia: /tainguyen/hinhanh/og-default.svg
+anh_bia: /tainguyen/hinhanh/uploads/20261116-healthy-nails-after-treatment-yvhztn.webp
 nhap: false
 ---
 

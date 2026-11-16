@@ -1,0 +1,25 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "agripathlife.github.io",
+  "home_page_url": "https://agripathlife.github.io/",
+  "feed_url": "https://agripathlife.github.io/feed.json",
+  "description": "Nhật ký một gã khờ.",
+  "language": "vi",
+  "authors": [
+    {
+      "name": "Hạ Vũ",
+      "avatar": "https://avatars.githubusercontent.com/u/246151016?v=4"
+    }
+  ],
+  "items": [
+    {
+      "id": "https://agripathlife.github.io/2026/11/16/chao-mung-den-voi-blogvn.html",
+      "url": "https://agripathlife.github.io/2026/11/16/chao-mung-den-voi-blogvn.html",
+      "title": "Chào mừng đến với Blog của agripathlife",
+      "summary": "Xin chào Đây là bài viết đầu tiên trên trang GitHub Pages của bạn.",
+      "content_text": "Xin chào! Đây là bài viết đầu tiên trên trang GitHub Pages của bạn.",
+      "date_published": "2026-11-16T00:00:00Z",
+      "tags": []
+    }
+  ]
+}

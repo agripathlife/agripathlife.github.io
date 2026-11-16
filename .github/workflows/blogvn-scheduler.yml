@@ -1,0 +1,44 @@
+name: BlogVN Scheduled Publish & Auto-Delete
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-schedules:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: |
+          node -e '
+          const fs = require("fs");
+          const path = require("path");
+          const p = ".blogvn/schedules.json";
+          if (!fs.existsSync(p)) process.exit(0);
+          const jobs = JSON.parse(fs.readFileSync(p, "utf8"));
+          let changed = false;
+          for (const j of jobs) {
+            if (j.status !== "pending" || Date.parse(j.scheduledAt) > Date.now()) continue;
+            if (j.type === "publish" && j.rawContent) {
+              fs.mkdirSync(path.dirname(j.filePath), { recursive: true });
+              fs.writeFileSync(j.filePath, j.rawContent, "utf8");
+              j.status = "completed"; j.executedAt = new Date().toISOString(); changed = true;
+            } else if (j.type === "delete" && fs.existsSync(j.filePath)) {
+              fs.unlinkSync(j.filePath);
+              j.status = "completed"; j.executedAt = new Date().toISOString(); changed = true;
+            }
+          }
+          if (changed) fs.writeFileSync(p, JSON.stringify(jobs, null, 2));
+          '
+      - run: |
+          git config user.name "BlogVN Scheduler"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if ! git diff --staged --quiet; then git commit -m "BlogVN: Scheduled update" && git push; fi

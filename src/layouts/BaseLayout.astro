@@ -26,13 +26,30 @@ const iconHref = withBase(SITE_CONFIG.siteIcon || '/favicon.svg');
 const ogImgHref = withBase(ogImage);
 const initialDark = SITE_CONFIG.themeMode === 'dark';
 const currentPath = Astro.url.pathname;
+const liveChat = SITE_CONFIG.liveChat;
+const activeChatChannels = (liveChat?.channels || []).filter(
+  (ch) => ch.enabled && ch.value && ch.value.trim().length > 0
+);
+const directChatChannels = activeChatChannels.filter(
+  (ch) => ch.id !== 'tawkto' && ch.id !== 'crisp'
+);
+const tawkChannel = activeChatChannels.find((ch) => ch.id === 'tawkto');
+const crispChannel = activeChatChannels.find((ch) => ch.id === 'crisp');
+
+function resolveChatHref(id: string, rawValue: string): string {
+  const val = rawValue.trim();
+  if (/^(https?:|mailto:|tel:)/i.test(val)) return val;
+  if (id === 'zalo') return `https://zalo.me/${encodeURIComponent(val.replace(/^@/, ''))}`;
+  if (id === 'messenger') return `https://m.me/${encodeURIComponent(val.replace(/^@/, ''))}`;
+  if (id === 'telegram') return `https://t.me/${encodeURIComponent(val.replace(/^@/, ''))}`;
+  if (id === 'whatsapp') return `https://wa.me/${val.replace(/[^0-9]/g, '')}`;
+  if (id === 'email') return `mailto:${val}`;
+  return val;
+}
 
 const mainNav = [
-  { label: 'Trang chủ', href: withBase('/') },
-  { label: 'Bài viết', href: withBase('/bai-viet/') },
-  { label: 'Dự án', href: withBase('/du-an/') },
-  { label: 'Sách', href: withBase('/sach/') },
-  { label: 'Cửa hàng', href: withBase('/cua-hang/') },
+  { label: 'Trang nhất', href: withBase('/') },
+  { label: 'Kho bài viết', href: withBase('/bai-viet/') },
 ];
 ---
 
@@ -64,26 +81,15 @@ const mainNav = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-
-    <script is:inline define:vars={{ initialDark }}>
-      try {
-        const stored = localStorage.getItem('blogvn_astro_theme');
-        if (stored === 'dark' || (!stored && initialDark)) {
-          document.documentElement.classList.add('dark');
-        } else if (stored === 'light') {
-          document.documentElement.classList.remove('dark');
-        }
-      } catch {}
-    </script>
   </head>
   <body data-template={SITE_CONFIG.templateStyle}>
     <header class="site-header">
       <div class="wrap nav-inner">
         <a class="brand" href={withBase('/')}>
-          <img src={iconHref} alt={SITE_CONFIG.headerTitle} width="30" height="30" />
+          <img src={iconHref} alt={SITE_CONFIG.headerTitle} width="28" height="28" />
           <span>{SITE_CONFIG.headerTitle}</span>
         </a>
 
@@ -111,9 +117,6 @@ const mainNav = [
           <a class="icon-btn" href={withBase('/rss.xml')} title="RSS Feed" aria-label="RSS Feed">
             RSS
           </a>
-          <button id="themeToggleBtn" class="theme-btn" type="button" aria-label="Đổi chế độ Sáng/Tối">
-            <span class="sun-label">Âm / Dương</span>
-          </button>
           <button id="mobileMenuBtn" class="mobile-menu-btn" type="button" aria-label="Mở menu">
             ☰
           </button>
@@ -143,6 +146,7 @@ const mainNav = [
           <p class="footer-sub">Tác giả: {SITE_CONFIG.authorName}</p>
         </div>
         <div class="footer-links">
+          <a href={withBase('/bai-viet/')}>Kho bài viết</a>
           <a href={withBase('/rss.xml')}>RSS</a>
           {SITE_CONFIG.footerLinks.map((link) => (
             <a
@@ -157,16 +161,69 @@ const mainNav = [
       </div>
     </footer>
 
+    {liveChat?.enabled && directChatChannels.length > 0 && (
+      <div id="blogvnLiveChat" class="livechat-dock">
+        <div id="livechatPanel" class="livechat-panel hidden" role="dialog" aria-label={liveChat.title || 'Live Chat'}>
+          <div class="livechat-head">
+            <div>
+              <strong>{liveChat.title || 'Trò chuyện với tác giả'}</strong>
+              {liveChat.welcomeText && <p>{liveChat.welcomeText}</p>}
+            </div>
+            <button id="livechatCloseBtn" type="button" aria-label="Đóng hộp chat">✕</button>
+          </div>
+          <div class="livechat-list">
+            {directChatChannels.map((ch) => (
+              <a
+                class="livechat-item"
+                href={resolveChatHref(ch.id, ch.value)}
+                target={ch.id === 'email' ? undefined : '_blank'}
+                rel={ch.id === 'email' ? undefined : 'noreferrer'}
+              >
+                <span class="livechat-ch-name">{ch.label || ch.id.toUpperCase()}</span>
+                <span class="livechat-ch-arrow">Nhắn ngay →</span>
+              </a>
+            ))}
+          </div>
+        </div>
+        <button id="livechatToggleBtn" class="livechat-fab" type="button" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          <span>Chat</span>
+        </button>
+      </div>
+    )}
+
+    {liveChat?.enabled && tawkChannel?.value && (
+      <script is:inline define:vars={{ tawkId: tawkChannel.value }}>
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+          var s1 = document.createElement('script'),
+            s0 = document.getElementsByTagName('script')[0];
+          s1.async = true;
+          s1.src = 'https://embed.tawk.to/' + tawkId;
+          s1.charset = 'UTF-8';
+          s1.setAttribute('crossorigin', '*');
+          s0.parentNode.insertBefore(s1, s0);
+        })();
+      </script>
+    )}
+
+    {liveChat?.enabled && crispChannel?.value && (
+      <script is:inline define:vars={{ crispId: crispChannel.value }}>
+        window.$crisp = [];
+        window.CRISP_WEBSITE_ID = crispId;
+        (function () {
+          var d = document;
+          var s = d.createElement('script');
+          s.src = 'https://client.crisp.chat/l.js';
+          s.async = true;
+          d.getElementsByTagName('head')[0].appendChild(s);
+        })();
+      </script>
+    )}
+
     <script is:inline>
-      const tBtn = document.getElementById('themeToggleBtn');
-      if (tBtn) {
-        tBtn.addEventListener('click', () => {
-          const isDark = document.documentElement.classList.toggle('dark');
-          try {
-            localStorage.setItem('blogvn_astro_theme', isDark ? 'dark' : 'light');
-          } catch {}
-        });
-      }
       const mBtn = document.getElementById('mobileMenuBtn');
       const mDrawer = document.getElementById('mobileDrawer');
       if (mBtn && mDrawer) {
@@ -174,38 +231,115 @@ const mainNav = [
           mDrawer.classList.toggle('hidden');
         });
       }
+      const chatToggle = document.getElementById('livechatToggleBtn');
+      const chatPanel = document.getElementById('livechatPanel');
+      const chatClose = document.getElementById('livechatCloseBtn');
+      if (chatToggle && chatPanel) {
+        chatToggle.addEventListener('click', () => {
+          const isHidden = chatPanel.classList.toggle('hidden');
+          chatToggle.setAttribute('aria-expanded', String(!isHidden));
+        });
+        if (chatClose) {
+          chatClose.addEventListener('click', () => {
+            chatPanel.classList.add('hidden');
+            chatToggle.setAttribute('aria-expanded', 'false');
+          });
+        }
+      }
     </script>
   </body>
 </html>
 
 <style is:global>
   :root {
-    --bg: #fafafa;
-    --surface: #f3f4f6;
-    --card: #ffffff;
-    --border: #e5e7eb;
-    --text: #111827;
-    --text-2: #374151;
-    --muted: #6b7280;
-    --accent: #111827;
-    --accent-text: #ffffff;
-    --link: #2563eb;
-    --font-display: 'Fraunces', Georgia, serif;
+    --bg: #121214;
+    --surface: #1A1B1F;
+    --card: #22242A;
+    --border: #2E313A;
+    --text: #F4F4F5;
+    --text-2: #D4D4D8;
+    --muted: #A1A1AA;
+    --accent: #E11D48;
+    --accent-text: #FFFFFF;
+    --link: #FB7185;
+    --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   }
 
-  html.dark {
-    --bg: #0b0d12;
-    --surface: #141720;
-    --card: #1b202c;
-    --border: #272d3d;
-    --text: #f3f4f6;
-    --text-2: #d1d5db;
-    --muted: #9ca3af;
-    --accent: #f3f4f6;
-    --accent-text: #0b0d12;
-    --link: #60a5fa;
+  body[data-template='newyorker-light'] {
+    --bg: #FAF7F2;
+    --surface: #F2EDE4;
+    --card: #FFFFFF;
+    --border: #DDD5C7;
+    --text: #141414;
+    --text-2: #3A352E;
+    --muted: #6E665A;
+    --accent: #141414;
+    --accent-text: #FAF7F2;
+    --link: #B91C1C;
+    --font-display: 'Playfair Display', 'Fraunces', Georgia, serif;
+    --font-body: 'Lora', Georgia, serif;
+  }
+
+  body[data-template='nytimes-light'] {
+    --bg: #FFFFFF;
+    --surface: #F5F6F8;
+    --card: #FFFFFF;
+    --border: #D4D4D8;
+    --text: #0F172A;
+    --text-2: #334155;
+    --muted: #64748B;
+    --accent: #0F172A;
+    --accent-text: #FFFFFF;
+    --link: #1E3A8A;
+    --font-display: 'Fraunces', 'Playfair Display', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  body[data-template='bbc-dark'] {
+    --bg: #121214;
+    --surface: #1A1B1F;
+    --card: #22242A;
+    --border: #2E313A;
+    --text: #F4F4F5;
+    --text-2: #D4D4D8;
+    --muted: #A1A1AA;
+    --accent: #E11D48;
+    --accent-text: #FFFFFF;
+    --link: #FB7185;
+    --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  body[data-template='obsidian-broadsheet'] {
+    --bg: #0B0D12;
+    --surface: #131722;
+    --card: #1A1F2E;
+    --border: #273043;
+    --text: #F3F4F6;
+    --text-2: #CBD5E1;
+    --muted: #94A3B8;
+    --accent: #F3F4F6;
+    --accent-text: #0B0D12;
+    --link: #60A5FA;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  body[data-template='espresso-salon'] {
+    --bg: #161210;
+    --surface: #201A17;
+    --card: #29221E;
+    --border: #3B312B;
+    --text: #F5EFE6;
+    --text-2: #D6CBC0;
+    --muted: #A39589;
+    --accent: #E5A93C;
+    --accent-text: #161210;
+    --link: #FBBF24;
+    --font-display: 'Playfair Display', 'Fraunces', Georgia, serif;
+    --font-body: 'Lora', Georgia, serif;
   }
 
   * {
@@ -219,7 +353,7 @@ const mainNav = [
     background: var(--bg);
     color: var(--text);
     font-family: var(--font-body);
-    line-height: 1.65;
+    line-height: 1.72;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -230,29 +364,37 @@ const mainNav = [
 
   a:hover {
     text-decoration: underline;
+    text-underline-offset: 4px;
   }
 
   .wrap {
-    max-width: 1040px;
+    max-width: 1080px;
     margin: 0 auto;
     padding: 0 20px;
   }
 
-  body[data-template='minimal'] .wrap {
-    max-width: 780px;
+  body[data-template='newyorker-light'] .wrap,
+  body[data-template='espresso-salon'] .wrap {
+    max-width: 900px;
   }
 
-  body[data-template='visual-grid'] .wrap {
-    max-width: 1200px;
+  body[data-template='nytimes-light'] .wrap,
+  body[data-template='obsidian-broadsheet'] .wrap,
+  body[data-template='bbc-dark'] .wrap {
+    max-width: 1180px;
   }
 
   .site-header {
     position: sticky;
     top: 0;
     z-index: 40;
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
+  }
+
+  body[data-template='newyorker-light'] .site-header {
+    border-bottom: 3px double var(--border);
   }
 
   .nav-inner {
@@ -260,7 +402,7 @@ const mainNav = [
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    min-height: 64px;
+    min-height: 60px;
   }
 
   .brand {
@@ -270,19 +412,20 @@ const mainNav = [
     color: var(--text);
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 1.15rem;
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
     text-decoration: none !important;
   }
 
   .brand img {
-    border-radius: 8px;
+    border-radius: 6px;
     object-fit: cover;
   }
 
   .nav-links {
     display: none;
     align-items: center;
-    gap: 20px;
+    gap: 22px;
     font-size: 0.9rem;
     font-weight: 500;
   }
@@ -305,19 +448,18 @@ const mainNav = [
   }
 
   .icon-btn,
-  .theme-btn,
   .mobile-menu-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 38px;
-    padding: 0 12px;
-    border-radius: 10px;
+    min-height: 36px;
+    padding: 0 11px;
+    border-radius: 8px;
     border: 1px solid var(--border);
     background: var(--surface);
     color: var(--text);
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-weight: 500;
     cursor: pointer;
     text-decoration: none !important;
@@ -364,14 +506,18 @@ const mainNav = [
 
   .main-content {
     min-height: calc(100vh - 200px);
-    padding-top: 32px;
-    padding-bottom: 56px;
+    padding-top: 28px;
+    padding-bottom: 64px;
   }
 
   .site-footer {
     border-top: 1px solid var(--border);
     background: var(--surface);
     padding: 28px 0;
+  }
+
+  body[data-template='newyorker-light'] .site-footer {
+    border-top: 3px double var(--border);
   }
 
   .footer-inner {
@@ -398,49 +544,64 @@ const mainNav = [
   .footer-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 16px;
+    gap: 18px;
     font-size: 0.84rem;
   }
 
   .prose {
-    font-size: 1.04rem;
-    line-height: 1.8;
+    font-size: 1.08rem;
+    line-height: 1.82;
     color: var(--text-2);
+    max-width: 68ch;
+  }
+
+  body[data-template='newyorker-light'] .prose > p:first-of-type::first-letter,
+  body[data-template='espresso-salon'] .prose > p:first-of-type::first-letter {
+    float: left;
+    font-family: var(--font-display);
+    font-size: 3.4rem;
+    line-height: 0.85;
+    font-weight: 700;
+    color: var(--text);
+    padding-right: 10px;
+    padding-top: 4px;
   }
 
   .prose h2,
   .prose h3 {
     font-family: var(--font-display);
     color: var(--text);
-    margin-top: 2rem;
+    margin-top: 2.1rem;
     margin-bottom: 0.75rem;
-    line-height: 1.3;
+    line-height: 1.25;
   }
 
   .prose p {
-    margin: 1rem 0;
+    margin: 1.15rem 0;
   }
 
   .prose img {
     max-width: 100%;
     height: auto;
-    border-radius: 14px;
-    margin: 1.5rem 0;
+    border-radius: 10px;
+    margin: 1.6rem 0;
     border: 1px solid var(--border);
   }
 
   .prose blockquote {
-    margin: 1.5rem 0;
-    padding: 0.9rem 1.25rem;
-    border-left: 3px solid var(--link);
-    background: var(--surface);
-    border-radius: 0 12px 12px 0;
+    margin: 1.8rem 0;
+    padding: 1.1rem 1.25rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.15rem;
     color: var(--text);
   }
 
   .prose pre {
     padding: 1rem;
-    border-radius: 12px;
+    border-radius: 10px;
     overflow-x: auto;
     background: var(--surface);
     border: 1px solid var(--border);
@@ -453,11 +614,116 @@ const mainNav = [
     font-size: 0.88em;
     background: var(--surface);
     padding: 0.15em 0.4em;
-    border-radius: 6px;
+    border-radius: 5px;
   }
 
   .prose pre code {
     background: transparent;
     padding: 0;
+  }
+
+  .livechat-dock {
+    position: fixed;
+    right: 18px;
+    bottom: 18px;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .livechat-fab {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--accent);
+    color: var(--accent-text);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  }
+
+  .livechat-panel {
+    width: min(320px, calc(100vw - 36px));
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+
+  .livechat-panel.hidden {
+    display: none;
+  }
+
+  .livechat-head {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .livechat-head strong {
+    display: block;
+    font-size: 0.92rem;
+    font-family: var(--font-display);
+  }
+
+  .livechat-head p {
+    margin: 4px 0 0;
+    font-size: 0.78rem;
+    color: var(--text-2);
+    line-height: 1.45;
+  }
+
+  .livechat-head button {
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.95rem;
+    padding: 2px 6px;
+  }
+
+  .livechat-list {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .livechat-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 0.84rem;
+    font-weight: 600;
+    text-decoration: none !important;
+  }
+
+  .livechat-item:hover {
+    border-color: var(--link);
+  }
+
+  .livechat-ch-arrow {
+    font-size: 0.76rem;
+    color: var(--link);
+    font-family: var(--font-mono);
   }
 </style>

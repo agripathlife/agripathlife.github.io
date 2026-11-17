@@ -13,7 +13,7 @@ export const GET: APIRoute = async ({ site }) => {
     (e) => !e.data.nhap && !e.data.draft && !e.data.noindex
   );
 
-  const staticRoutes = ['/', '/bai-viet/', '/du-an/', '/sach/', '/cua-hang/'];
+  const staticRoutes = ['/', '/bai-viet/'];
   const urls = [
     ...staticRoutes.map((r) => ({
       loc: `${origin}${withBase(r)}`,

@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
 import { SITE_CONFIG } from '../../cau_hinh/trang_web';
 import {
   estimateReadingTime,
@@ -14,35 +15,43 @@ import {
 } from '../../utils/url';
 
 export async function getStaticPaths() {
-  const entries = await getCollection('bai_viet');
-  return entries
+  const entries = (await getCollection('bai_viet'))
     .filter((e) => !e.data.nhap && !e.data.draft)
-    .map((entry) => ({
-      params: { slug: getPostSlug(entry) },
-      props: { entry },
-    }));
+    .sort((a, b) => getPostDate(b).localeCompare(getPostDate(a)));
+  return entries.map((entry) => ({
+    params: { slug: getPostSlug(entry) },
+    props: { entry, allEntries: entries },
+  }));
 }
 
-const { entry } = Astro.props;
+const { entry, allEntries = [] } = Astro.props;
 const { Content } = await render(entry);
 const title = getPostTitle(entry);
 const date = getPostDate(entry);
 const excerpt = getPostExcerpt(entry);
 const cover = getPostCover(entry);
 const category = String(entry.data?.danh_muc || entry.data?.category || 'Bài viết');
-const tags: string[] = Array.isArray(entry.data?.tags)
-  ? entry.data.tags
-  : Array.isArray(entry.data?.cong_nghe)
-  ? entry.data.cong_nghe
-  : Array.isArray(entry.data?.the_loai)
-  ? entry.data.the_loai
-  : [];
+const tags: string[] = Array.isArray(entry.data?.tags) ? entry.data.tags : [];
 const minutes = estimateReadingTime(entry.body || '');
 const resolvedAuthor = String(entry.data?.tac_gia || entry.data?.author || SITE_CONFIG.authorName);
 const pageSlug = getPostSlug(entry);
 const canonicalTarget =
   entry.data?.canonical_url ||
   `${SITE_CONFIG.pagesUrl.replace(/\/+$/, '')}${withBase(`/bai-viet/${pageSlug}/`)}`;
+
+const relatedPosts = allEntries
+  .filter((other) => getPostSlug(other) !== pageSlug)
+  .sort((a, b) => {
+    const catA = String(a.data?.danh_muc || a.data?.category || '') === category ? 2 : 0;
+    const catB = String(b.data?.danh_muc || b.data?.category || '') === category ? 2 : 0;
+    const tagsA: string[] = Array.isArray(a.data?.tags) ? a.data.tags : [];
+    const tagsB: string[] = Array.isArray(b.data?.tags) ? b.data.tags : [];
+    const overlapA = tagsA.filter((t) => tags.includes(t)).length;
+    const overlapB = tagsB.filter((t) => tags.includes(t)).length;
+    return catB + overlapB - (catA + overlapA) || getPostDate(b).localeCompare(getPostDate(a));
+  })
+  .slice(0, 3);
+
 const blogPostingJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'BlogPosting',
@@ -71,25 +80,19 @@ const blogPostingJsonLd = {
   jsonLd={blogPostingJsonLd}
 >
   <article class="article-wrap">
-    <a class="back-link" href={withBase('/bai-viet/')}>← Quay lại Bài viết</a>
+    <a class="back-link" href={withBase('/bai-viet/')}>← Quay lại kho bài viết</a>
 
     <header class="article-header">
       <div class="article-meta">
-        <span>{formatVietnameseDate(date)}</span>
+        <span class="meta-cat">{category}</span>
         <span>·</span>
-        <span>{category}</span>
+        <span>{formatVietnameseDate(date)}</span>
         <span>·</span>
         <span>{minutes} phút đọc</span>
       </div>
       <h1>{title}</h1>
       {excerpt && <p class="article-lead">{excerpt}</p>}
-      {tags.length > 0 && (
-        <div class="tag-row">
-          {tags.map((t) => (
-            <span class="tag-chip">#{t}</span>
-          ))}
-        </div>
-      )}
+      <div class="article-byline">Bởi <strong>{resolvedAuthor}</strong></div>
     </header>
 
     {cover && (
@@ -102,30 +105,47 @@ const blogPostingJsonLd = {
       <Content />
     </div>
 
+    {tags.length > 0 && (
+      <div class="tag-row">
+        Chủ đề: {tags.map((t) => `#${t}`).join(' · ')}
+      </div>
+    )}
+
     <aside class="author-box">
-      <div class="author-name">{entry.data?.tac_gia || entry.data?.author || SITE_CONFIG.authorName}</div>
+      <div class="author-name">{resolvedAuthor}</div>
       <p class="author-bio">{SITE_CONFIG.authorBio}</p>
     </aside>
   </article>
+
+  {relatedPosts.length > 0 && (
+    <section class="related-section">
+      <h2 class="related-title">Bài viết liên quan</h2>
+      <div class="related-grid">
+        {relatedPosts.map((rel) => (
+          <PostCard entry={rel} />
+        ))}
+      </div>
+    </section>
+  )}
 </BaseLayout>
 
 <style>
   .article-wrap {
-    max-width: 760px;
+    max-width: 720px;
     margin: 0 auto;
   }
 
   .back-link {
     display: inline-block;
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     font-weight: 500;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
   }
 
   .article-header {
     padding-bottom: 22px;
     border-bottom: 1px solid var(--border);
-    margin-bottom: 24px;
+    margin-bottom: 26px;
   }
 
   .article-meta {
@@ -133,39 +153,43 @@ const blogPostingJsonLd = {
     flex-wrap: wrap;
     gap: 8px;
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     color: var(--muted);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+  }
+
+  .meta-cat {
+    color: var(--link);
+    font-weight: 600;
+    text-transform: uppercase;
   }
 
   .article-header h1 {
     margin: 0 0 12px;
     font-family: var(--font-display);
-    font-size: clamp(1.8rem, 3.8vw, 2.5rem);
-    line-height: 1.2;
+    font-size: clamp(1.9rem, 4vw, 2.7rem);
+    line-height: 1.15;
   }
 
   .article-lead {
-    margin: 0;
-    font-size: 1.05rem;
+    margin: 0 0 12px;
+    font-size: 1.08rem;
     color: var(--text-2);
+    line-height: 1.6;
+  }
+
+  .article-byline {
+    font-size: 0.88rem;
+    color: var(--muted);
   }
 
   .tag-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 14px;
-  }
-
-  .tag-chip {
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
     font-family: var(--font-mono);
-    font-size: 0.76rem;
-    padding: 3px 9px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text-2);
+    font-size: 0.8rem;
+    color: var(--muted);
   }
 
   .article-cover {
@@ -176,14 +200,14 @@ const blogPostingJsonLd = {
     width: 100%;
     max-height: 440px;
     object-fit: cover;
-    border-radius: 16px;
+    border-radius: 12px;
     border: 1px solid var(--border);
   }
 
   .author-box {
-    margin-top: 40px;
+    margin-top: 36px;
     padding: 20px;
-    border-radius: 16px;
+    border-radius: 12px;
     border: 1px solid var(--border);
     background: var(--surface);
   }
@@ -199,5 +223,30 @@ const blogPostingJsonLd = {
     margin: 0;
     font-size: 0.92rem;
     color: var(--text-2);
+  }
+
+  .related-section {
+    max-width: 960px;
+    margin: 48px auto 0;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+  }
+
+  .related-title {
+    margin: 0 0 18px;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  @media (min-width: 720px) {
+    .related-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 </style>

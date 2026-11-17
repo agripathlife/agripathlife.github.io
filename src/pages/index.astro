@@ -3,11 +3,26 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PostCard from '../components/PostCard.astro';
 import { SITE_CONFIG } from '../cau_hinh/trang_web';
-import { getPostDate, withBase } from '../utils/url';
+import {
+  estimateReadingTime,
+  formatVietnameseDate,
+  getPostCover,
+  getPostDate,
+  getPostExcerpt,
+  getPostSlug,
+  getPostTitle,
+  withBase,
+} from '../utils/url';
 
 const posts = (await getCollection('bai_viet'))
   .filter((e) => !e.data.nhap && !e.data.draft)
   .sort((a, b) => getPostDate(b).localeCompare(getPostDate(a)));
+
+const leadPost = posts[0] || null;
+const secondaryPosts = posts.slice(1);
+const leadCover = leadPost ? getPostCover(leadPost) : undefined;
+const leadSlug = leadPost ? getPostSlug(leadPost) : '';
+const leadHref = leadPost ? withBase(`/bai-viet/${leadSlug}/`) : '#';
 
 const homeJsonLd = {
   '@context': 'https://schema.org',
@@ -23,33 +38,57 @@ const homeJsonLd = {
 ---
 
 <BaseLayout jsonLd={homeJsonLd}>
-  <section class="hero">
-    <div class="hero-kicker">{SITE_CONFIG.authorName} · Blog cá nhân</div>
+  <section class="masthead">
+    <div class="masthead-kicker">{SITE_CONFIG.authorName} · Ấn phẩm Blog cá nhân</div>
     <h1>{SITE_CONFIG.siteTitle}</h1>
-    <p class="hero-desc">{SITE_CONFIG.tagline}</p>
+    <p class="masthead-desc">{SITE_CONFIG.tagline}</p>
 
-    <div class="hero-tools">
+    <div class="masthead-tools">
       <input
         id="homeSearchInput"
         type="search"
-        placeholder="Tìm kiếm bài viết theo tiêu đề, chủ đề..."
+        placeholder="Tìm bài viết theo tiêu đề, chủ đề..."
         class="search-input"
       />
-      <a class="hero-cta" href={withBase('/bai-viet/')}>Xem tất cả ({posts.length})</a>
+      <a class="masthead-cta" href={withBase('/bai-viet/')}>Kho bài viết ({posts.length})</a>
     </div>
   </section>
 
+  {leadPost && (
+    <section class="lead-section" data-search={`${getPostTitle(leadPost)} ${getPostExcerpt(leadPost)}`.toLowerCase()}>
+      <a class="lead-card" href={leadHref}>
+        <div class="lead-text">
+          <div class="lead-meta">
+            <span class="lead-rubric">{String(leadPost.data?.danh_muc || 'Tiêu điểm')}</span>
+            <span>·</span>
+            <span>{formatVietnameseDate(getPostDate(leadPost))}</span>
+            <span>·</span>
+            <span>{estimateReadingTime(leadPost.body || '')} phút đọc</span>
+          </div>
+          <h2>{getPostTitle(leadPost)}</h2>
+          <p>{getPostExcerpt(leadPost)}</p>
+          <span class="read-more">Đọc trọn bài viết →</span>
+        </div>
+        {leadCover && (
+          <div class="lead-media">
+            <img src={leadCover} alt={getPostTitle(leadPost)} />
+          </div>
+        )}
+      </a>
+    </section>
+  )}
+
   <section class="posts-section">
     <div class="section-head">
-      <h2>Bài viết mới nhất</h2>
+      <h2>Bài viết gần đây</h2>
     </div>
 
     {posts.length === 0 ? (
       <p class="empty-note">Chưa có bài viết nào được xuất bản.</p>
     ) : (
       <div id="postsGrid" class={`posts-grid template-${SITE_CONFIG.templateStyle}`}>
-        {posts.map((entry) => (
-          <PostCard entry={entry} routePrefix="/bai-viet" />
+        {secondaryPosts.map((entry) => (
+          <PostCard entry={entry} />
         ))}
       </div>
     )}
@@ -59,12 +98,19 @@ const homeJsonLd = {
   <script is:inline>
     const input = document.getElementById('homeSearchInput');
     const grid = document.getElementById('postsGrid');
+    const leadSection = document.querySelector('.lead-section');
     const emptyMsg = document.getElementById('searchEmptyMsg');
     if (input && grid) {
       input.addEventListener('input', () => {
         const q = input.value.trim().toLowerCase();
         const cards = grid.querySelectorAll('.post-card');
         let visible = 0;
+        if (leadSection) {
+          const leadText = leadSection.getAttribute('data-search') || '';
+          const matchLead = !q || leadText.includes(q);
+          leadSection.style.display = matchLead ? '' : 'none';
+          if (matchLead) visible++;
+        }
         cards.forEach((card) => {
           const text = card.getAttribute('data-search') || '';
           const match = !q || text.includes(q);
@@ -80,66 +126,163 @@ const homeJsonLd = {
 </BaseLayout>
 
 <style>
-  .hero {
-    padding: 18px 0 32px;
+  .masthead {
+    padding: 18px 0 28px;
     border-bottom: 1px solid var(--border);
   }
 
-  .hero-kicker {
+  :global(body[data-template='newyorker-light']) .masthead {
+    text-align: center;
+    border-bottom: 3px double var(--border);
+    padding: 26px 0 32px;
+  }
+
+  :global(body[data-template='newyorker-light']) .masthead-desc {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  :global(body[data-template='newyorker-light']) .masthead-tools {
+    justify-content: center;
+  }
+
+  .masthead-kicker {
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: 0.76rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     color: var(--link);
     margin-bottom: 10px;
   }
 
-  .hero h1 {
+  .masthead h1 {
     margin: 0 0 12px;
     font-family: var(--font-display);
-    font-size: clamp(2rem, 4.5vw, 3.1rem);
-    line-height: 1.15;
-    letter-spacing: -0.02em;
+    font-size: clamp(2.1rem, 4.8vw, 3.25rem);
+    line-height: 1.12;
+    letter-spacing: -0.025em;
   }
 
-  .hero-desc {
+  .masthead-desc {
     margin: 0;
-    max-width: 65ch;
+    max-width: 62ch;
     color: var(--text-2);
-    font-size: 1.05rem;
+    font-size: 1.02rem;
   }
 
-  .hero-tools {
-    margin-top: 24px;
+  .masthead-tools {
+    margin-top: 22px;
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
     align-items: center;
   }
 
   .search-input {
     flex: 1;
+    max-width: 420px;
     min-width: 220px;
     min-height: 44px;
     padding: 0 14px;
-    border-radius: 12px;
+    border-radius: 10px;
     border: 1px solid var(--border);
     background: var(--card);
     color: var(--text);
-    font-size: 0.92rem;
+    font-size: 0.9rem;
     font-family: inherit;
   }
 
-  .hero-cta {
+  .masthead-cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-height: 44px;
     padding: 0 18px;
-    border-radius: 12px;
+    border-radius: 10px;
     background: var(--accent);
     color: var(--accent-text);
-    font-size: 0.88rem;
+    font-size: 0.86rem;
     font-weight: 600;
     text-decoration: none !important;
+  }
+
+  .lead-section {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lead-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    align-items: center;
+    color: inherit;
+    text-decoration: none !important;
+  }
+
+  @media (min-width: 800px) {
+    .lead-card {
+      grid-template-columns: 1.15fr 1fr;
+      gap: 32px;
+    }
+  }
+
+  .lead-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .lead-rubric {
+    color: var(--link);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .lead-text h2 {
+    margin: 0 0 12px;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 3vw, 2.25rem);
+    line-height: 1.18;
+    color: var(--text);
+  }
+
+  .lead-card:hover .lead-text h2 {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .lead-text p {
+    margin: 0 0 14px;
+    color: var(--text-2);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .read-more {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--link);
+  }
+
+  .lead-media {
+    aspect-ratio: 16 / 10;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .lead-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .posts-section {
@@ -148,7 +291,7 @@ const homeJsonLd = {
 
   .section-head h2 {
     font-family: var(--font-display);
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     margin: 0 0 18px;
   }
 
@@ -159,22 +302,22 @@ const homeJsonLd = {
   }
 
   @media (min-width: 720px) {
-    .posts-grid.template-editorial {
+    .posts-grid.template-newyorker-light,
+    .posts-grid.template-espresso-salon {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .posts-grid.template-minimal {
-      grid-template-columns: 1fr;
-      gap: 16px;
-    }
-
-    .posts-grid.template-visual-grid {
+    .posts-grid.template-nytimes-light,
+    .posts-grid.template-obsidian-broadsheet,
+    .posts-grid.template-bbc-dark {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
   @media (min-width: 1024px) {
-    .posts-grid.template-visual-grid {
+    .posts-grid.template-nytimes-light,
+    .posts-grid.template-obsidian-broadsheet,
+    .posts-grid.template-bbc-dark {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }

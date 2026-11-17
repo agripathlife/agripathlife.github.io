@@ -15,7 +15,6 @@ export function getPostSlug(entry: { id: string; data?: Record<string, any> }): 
 export function getPostTitle(entry: { id: string; data?: Record<string, any> }): string {
   return String(
     entry.data?.tieu_de ||
-      entry.data?.ten_san_pham ||
       entry.data?.title ||
       entry.id ||
       'Chưa đặt tiêu đề'
@@ -31,7 +30,6 @@ export function getPostDate(entry: { data?: Record<string, any> }): string {
 export function getPostExcerpt(entry: { body?: string; data?: Record<string, any> }): string {
   const raw =
     entry.data?.mo_ta ||
-    entry.data?.mo_ta_ngan ||
     entry.data?.excerpt ||
     entry.data?.description ||
     '';
@@ -47,8 +45,6 @@ export function getPostExcerpt(entry: { body?: string; data?: Record<string, any
 export function getPostCover(entry: { data?: Record<string, any> }): string | undefined {
   const raw =
     entry.data?.anh_bia ||
-    entry.data?.anh_dai_dien ||
-    entry.data?.anh_san_pham ||
     entry.data?.cover ||
     entry.data?.heroImage ||
     entry.data?.image;

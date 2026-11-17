@@ -8,23 +8,100 @@ import { getPostDate } from '../../utils/url';
 const entries = (await getCollection('bai_viet'))
   .filter((e) => !e.data.nhap && !e.data.draft)
   .sort((a, b) => getPostDate(b).localeCompare(getPostDate(a)));
+
+const categories = Array.from(
+  new Set(
+    entries
+      .map((e) => String(e.data?.danh_muc || e.data?.category || 'Bài viết').trim())
+      .filter(Boolean)
+  )
+);
 ---
 
-<BaseLayout title="Bài viết" description="Tất cả ghi chép, chia sẻ kinh nghiệm và bài viết chuyên sâu.">
+<BaseLayout title="Kho bài viết" description="Toàn bộ bài viết, tiểu luận và ghi chép trên blog.">
   <div class="col-header">
-    <h1>Bài viết</h1>
-    <p>Tất cả ghi chép, chia sẻ kinh nghiệm và bài viết chuyên sâu.</p>
+    <h1>Kho bài viết</h1>
+    <p>Tất cả {entries.length} bài viết đã xuất bản.</p>
+
+    <div class="archive-tools">
+      <input
+        id="archiveSearchInput"
+        type="search"
+        placeholder="Tìm trong kho bài viết..."
+        class="archive-search"
+      />
+      {categories.length > 1 && (
+        <div id="archiveCatBar" class="cat-bar" role="tablist" aria-label="Lọc theo chuyên mục">
+          <button type="button" class="cat-btn active" data-cat="all">
+            Tất cả ({entries.length})
+          </button>
+          {categories.map((cat) => (
+            <button type="button" class="cat-btn" data-cat={cat.toLowerCase()}>
+              {cat}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
   </div>
 
   {entries.length === 0 ? (
-    <p style="color: var(--muted);">Chưa có mục nào trong danh mục này.</p>
+    <p style="color: var(--muted);">Chưa có bài viết nào được xuất bản.</p>
   ) : (
-    <div class={`col-grid template-${SITE_CONFIG.templateStyle}`}>
+    <div id="archiveGrid" class={`col-grid template-${SITE_CONFIG.templateStyle}`}>
       {entries.map((entry) => (
-        <PostCard entry={entry} routePrefix="/bai-viet" />
+        <div
+          class="archive-item"
+          data-cat={String(entry.data?.danh_muc || entry.data?.category || 'Bài viết').trim().toLowerCase()}
+        >
+          <PostCard entry={entry} />
+        </div>
       ))}
     </div>
   )}
+  <p id="archiveEmptyMsg" class="empty-archive hidden">Không có bài viết nào khớp bộ lọc hiện tại.</p>
+
+  <script is:inline>
+    const archiveInput = document.getElementById('archiveSearchInput');
+    const archiveCatBar = document.getElementById('archiveCatBar');
+    const archiveGrid = document.getElementById('archiveGrid');
+    const archiveEmpty = document.getElementById('archiveEmptyMsg');
+    let currentCat = 'all';
+
+    function filterArchive() {
+      if (!archiveGrid) return;
+      const q = (archiveInput ? archiveInput.value : '').trim().toLowerCase();
+      const items = archiveGrid.querySelectorAll('.archive-item');
+      let shown = 0;
+      items.forEach((item) => {
+        const cat = item.getAttribute('data-cat') || '';
+        const card = item.querySelector('.post-card');
+        const txt = card ? (card.getAttribute('data-search') || '') : '';
+        const okCat = currentCat === 'all' || cat === currentCat;
+        const okSearch = !q || txt.includes(q);
+        const visible = okCat && okSearch;
+        item.style.display = visible ? '' : 'none';
+        if (visible) shown++;
+      });
+      if (archiveEmpty) {
+        archiveEmpty.classList.toggle('hidden', shown > 0);
+      }
+    }
+
+    if (archiveInput) {
+      archiveInput.addEventListener('input', filterArchive);
+    }
+    if (archiveCatBar) {
+      archiveCatBar.querySelectorAll('.cat-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          currentCat = btn.getAttribute('data-cat') || 'all';
+          archiveCatBar.querySelectorAll('.cat-btn').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          filterArchive();
+        });
+      });
+    }
+  </script>
 </BaseLayout>
 
 <style>
@@ -42,24 +119,68 @@ const entries = (await getCollection('bai_viet'))
     margin: 0;
     color: var(--text-2);
   }
+  .archive-tools {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .archive-search {
+    max-width: 420px;
+    min-height: 42px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    font-size: 0.9rem;
+    font-family: inherit;
+  }
+  .cat-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .cat-btn {
+    min-height: 36px;
+    padding: 0 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-2);
+    font-size: 0.82rem;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .cat-btn.active {
+    background: var(--accent);
+    color: var(--accent-text);
+    border-color: var(--accent);
+  }
   .col-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 20px;
   }
   @media (min-width: 720px) {
-    .col-grid.template-editorial,
-    .col-grid.template-visual-grid {
+    .col-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .col-grid.template-minimal {
-      grid-template-columns: 1fr;
-      gap: 16px;
     }
   }
   @media (min-width: 1024px) {
-    .col-grid.template-visual-grid {
+    .col-grid.template-nytimes-light,
+    .col-grid.template-obsidian-broadsheet,
+    .col-grid.template-bbc-dark {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }
+  }
+  .empty-archive {
+    color: var(--muted);
+    padding: 20px 0;
+  }
+  .hidden {
+    display: none;
   }
 </style>

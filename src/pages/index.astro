@@ -9,12 +9,20 @@ const posts = (await getCollection('bai_viet'))
   .filter((e) => !e.data.nhap && !e.data.draft)
   .sort((a, b) => getPostDate(b).localeCompare(getPostDate(a)));
 
-const projects = await getCollection('du_an');
-const books = await getCollection('sach');
-const shop = await getCollection('cua_hang');
+const homeJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: SITE_CONFIG.siteTitle,
+  description: SITE_CONFIG.tagline,
+  url: SITE_CONFIG.pagesUrl,
+  author: {
+    '@type': 'Person',
+    name: SITE_CONFIG.authorName,
+  },
+};
 ---
 
-<BaseLayout>
+<BaseLayout jsonLd={homeJsonLd}>
   <section class="hero">
     <div class="hero-kicker">{SITE_CONFIG.authorName} · Blog cá nhân</div>
     <h1>{SITE_CONFIG.siteTitle}</h1>
@@ -31,25 +39,6 @@ const shop = await getCollection('cua_hang');
     </div>
   </section>
 
-  <section class="stats-strip">
-    <a class="strip-card" href={withBase('/bai-viet/')}>
-      <strong>{posts.length}</strong>
-      <span>Bài viết</span>
-    </a>
-    <a class="strip-card" href={withBase('/du-an/')}>
-      <strong>{projects.length}</strong>
-      <span>Dự án</span>
-    </a>
-    <a class="strip-card" href={withBase('/sach/')}>
-      <strong>{books.length}</strong>
-      <span>Sách &amp; Tài liệu</span>
-    </a>
-    <a class="strip-card" href={withBase('/cua-hang/')}>
-      <strong>{shop.length}</strong>
-      <span>Cửa hàng</span>
-    </a>
-  </section>
-
   <section class="posts-section">
     <div class="section-head">
       <h2>Bài viết mới nhất</h2>
@@ -58,7 +47,7 @@ const shop = await getCollection('cua_hang');
     {posts.length === 0 ? (
       <p class="empty-note">Chưa có bài viết nào được xuất bản.</p>
     ) : (
-      <div id="postsGrid" class="posts-grid">
+      <div id="postsGrid" class={`posts-grid template-${SITE_CONFIG.templateStyle}`}>
         {posts.map((entry) => (
           <PostCard entry={entry} routePrefix="/bai-viet" />
         ))}
@@ -153,39 +142,8 @@ const shop = await getCollection('cua_hang');
     text-decoration: none !important;
   }
 
-  .stats-strip {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    margin: 28px 0;
-  }
-
-  @media (min-width: 640px) {
-    .stats-strip {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
-
-  .strip-card {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    padding: 14px 16px;
-    border-radius: 14px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    text-decoration: none !important;
-  }
-
-  .strip-card strong {
-    font-family: var(--font-display);
-    font-size: 1.35rem;
-  }
-
-  .strip-card span {
-    font-size: 0.82rem;
-    color: var(--muted);
+  .posts-section {
+    padding-top: 28px;
   }
 
   .section-head h2 {
@@ -201,8 +159,23 @@ const shop = await getCollection('cua_hang');
   }
 
   @media (min-width: 720px) {
-    .posts-grid {
+    .posts-grid.template-editorial {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .posts-grid.template-minimal {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .posts-grid.template-visual-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .posts-grid.template-visual-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
   }
 

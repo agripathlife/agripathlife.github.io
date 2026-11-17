@@ -8,6 +8,7 @@ interface Props {
   ogImage?: string;
   noindex?: boolean;
   canonical?: string;
+  jsonLd?: Record<string, any>;
 }
 
 const {
@@ -16,6 +17,7 @@ const {
   ogImage = '/tainguyen/hinhanh/og-default.svg',
   noindex = false,
   canonical,
+  jsonLd,
 } = Astro.props;
 
 const fullTitle =
@@ -55,7 +57,9 @@ const mainNav = [
     <link rel="icon" href={iconHref} />
     <link rel="apple-touch-icon" href={iconHref} />
     <link rel="manifest" href={withBase('/manifest.webmanifest')} />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href={withBase('/sitemap.xml')} />
     <link rel="alternate" type="application/rss+xml" title={`${SITE_CONFIG.siteTitle} RSS`} href={withBase('/rss.xml')} />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -75,7 +79,7 @@ const mainNav = [
       } catch {}
     </script>
   </head>
-  <body>
+  <body data-template={SITE_CONFIG.templateStyle}>
     <header class="site-header">
       <div class="wrap nav-inner">
         <a class="brand" href={withBase('/')}>
@@ -140,7 +144,6 @@ const mainNav = [
         </div>
         <div class="footer-links">
           <a href={withBase('/rss.xml')}>RSS</a>
-          <a href={withBase('/sitemap.xml')}>Sitemap</a>
           {SITE_CONFIG.footerLinks.map((link) => (
             <a
               href={withBase(link.url)}
@@ -233,6 +236,14 @@ const mainNav = [
     max-width: 1040px;
     margin: 0 auto;
     padding: 0 20px;
+  }
+
+  body[data-template='minimal'] .wrap {
+    max-width: 780px;
+  }
+
+  body[data-template='visual-grid'] .wrap {
+    max-width: 1200px;
   }
 
   .site-header {

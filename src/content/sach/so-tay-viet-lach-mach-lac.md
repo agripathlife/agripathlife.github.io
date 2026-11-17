@@ -11,7 +11,7 @@ dinh_dang:
   - Markdown
 gia: Đọc trực tuyến
 slug: so-tay-viet-lach-mach-lac
-ngay: '2026-11-16'
+ngay: '2026-11-17'
 ---
 
 ## Nội dung trọng tâm

@@ -1,5 +1,5 @@
 ---
-tieu_de: Chào mừng đến với Hạ Vũ
+tieu_de: Chào mừng đến với Vạn sự tùy tâm!
 danh_muc: Ghi chép
 chuyen_muc: ghi-chep
 slug: chao-mung-den-voi-blog
@@ -7,15 +7,15 @@ tags:
   - astro
   - blogvn
   - github-pages
-mo_ta: Bài viết khởi đầu của Hạ Vũ, triển khai sạch bằng Astro Blog Việt kết hợp nhận dạng web cá nhân.
-ngay: '2026-11-16'
+mo_ta: Bài viết khởi đầu của Vạn sự tùy tâm!, triển khai sạch bằng Astro Blog Việt kết hợp nhận dạng web cá nhân.
+ngay: '2026-11-17'
 anh_bia: /tainguyen/hinhanh/og-default.svg
 nhap: false
 ---
 
 ## Xin chào bạn đọc
 
-Chào mừng bạn ghé thăm **Hạ Vũ** — không gian ghi chép cá nhân do **Hạ Vũ** biên soạn và xuất bản tự động lên GitHub Pages thông qua Astro.
+Chào mừng bạn ghé thăm **Vạn sự tùy tâm!** — không gian ghi chép cá nhân do **Hạ Vũ** biên soạn và xuất bản tự động lên GitHub Pages thông qua Astro.
 
 ## Điểm nổi bật của mẫu blog này
 

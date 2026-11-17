@@ -7,7 +7,7 @@ danh_muc:
 gia: Miễn phí
 con_hang: true
 slug: bo-mau-bai-viet-markdown
-ngay: '2026-11-16'
+ngay: '2026-11-17'
 ---
 
 ## Bao gồm trong bộ tài nguyên

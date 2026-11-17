@@ -3,6 +3,8 @@ export interface SiteLink {
   url: string;
 }
 
+export type AstroTemplateStyle = 'editorial' | 'minimal' | 'visual-grid';
+
 export interface SiteIdentityConfig {
   siteTitle: string;
   tagline: string;
@@ -14,6 +16,7 @@ export interface SiteIdentityConfig {
   authorName: string;
   authorBio: string;
   themeMode: 'light' | 'dark';
+  templateStyle: AstroTemplateStyle;
   pagesUrl: string;
   githubOwner: string;
   githubRepo: string;
@@ -30,6 +33,7 @@ export const SITE_CONFIG: SiteIdentityConfig = {
   "authorName": "Hạ Vũ",
   "authorBio": "Một thoáng nhân gian há phải bận lòng !",
   "themeMode": "dark",
+  "templateStyle": "minimal",
   "pagesUrl": "https://agripathlife.github.io",
   "githubOwner": "agripathlife",
   "githubRepo": "agripathlife.github.io"

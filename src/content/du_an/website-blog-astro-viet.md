@@ -1,5 +1,5 @@
 ---
-tieu_de: Website Hạ Vũ trên Astro & GitHub Pages
+tieu_de: Website Vạn sự tùy tâm! trên Astro & GitHub Pages
 mo_ta_ngan: Hệ thống blog tĩnh tiếng Việt hỗ trợ xuất bản Markdown trực tiếp từ BlogVN.
 anh_dai_dien: /tainguyen/hinhanh/og-default.svg
 cong_nghe:
@@ -10,7 +10,7 @@ cong_nghe:
 link_demo: https://agripathlife.github.io
 link_github: https://github.com/agripathlife/agripathlife.github.io
 slug: website-blog-astro-viet
-ngay: '2026-11-16'
+ngay: '2026-11-17'
 ---
 
 ## Tổng quan dự án

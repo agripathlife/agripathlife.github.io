@@ -64,14 +64,14 @@ export const SITE_CONFIG: SiteIdentityConfig = {
     "channels": [
       {
         "id": "zalo",
-        "enabled": true,
+        "enabled": false,
         "value": "0969711187",
         "label": "Zalo"
       },
       {
         "id": "messenger",
-        "enabled": false,
-        "value": "",
+        "enabled": true,
+        "value": "m.me/huyenkhongthuquan",
         "label": "Messenger"
       },
       {

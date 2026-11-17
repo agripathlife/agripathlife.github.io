@@ -14,5 +14,5 @@
   "themeMode": "dark",
   "postsDirectory": "src/content/bai_viet",
   "authorAvatar": "https://avatars.githubusercontent.com/u/246151016?v=4",
-  "astroTemplate": "minimal"
+  "astroTemplate": "visual-grid"
 }

@@ -11,8 +11,57 @@
   "githubOwner": "agripathlife",
   "githubRepo": "agripathlife.github.io",
   "pagesUrl": "https://agripathlife.github.io",
-  "themeMode": "dark",
+  "themeMode": "light",
   "postsDirectory": "src/content/bai_viet",
-  "authorAvatar": "https://avatars.githubusercontent.com/u/246151016?v=4",
-  "astroTemplate": "visual-grid"
+  "astroTemplate": "newyorker-light",
+  "liveChat": {
+    "enabled": true,
+    "title": "Trò chuyện với tác giả",
+    "welcomeText": "Chọn kênh liên hệ trực tiếp bên dưới để nhắn tin nhanh.",
+    "channels": [
+      {
+        "id": "zalo",
+        "enabled": true,
+        "value": "0969711187",
+        "label": "Zalo"
+      },
+      {
+        "id": "messenger",
+        "enabled": false,
+        "value": "",
+        "label": "Messenger"
+      },
+      {
+        "id": "telegram",
+        "enabled": false,
+        "value": "",
+        "label": "Telegram"
+      },
+      {
+        "id": "whatsapp",
+        "enabled": false,
+        "value": "",
+        "label": "WhatsApp"
+      },
+      {
+        "id": "email",
+        "enabled": false,
+        "value": "",
+        "label": "Email"
+      },
+      {
+        "id": "tawkto",
+        "enabled": false,
+        "value": "",
+        "label": "Tawk.to Widget"
+      },
+      {
+        "id": "crisp",
+        "enabled": false,
+        "value": "",
+        "label": "Crisp Chat"
+      }
+    ]
+  },
+  "authorAvatar": "https://avatars.githubusercontent.com/u/246151016?v=4"
 }

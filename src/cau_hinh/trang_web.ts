@@ -3,7 +3,26 @@ export interface SiteLink {
   url: string;
 }
 
-export type AstroTemplateStyle = 'editorial' | 'minimal' | 'visual-grid';
+export interface LiveChatChannel {
+  id: 'messenger' | 'zalo' | 'telegram' | 'whatsapp' | 'tawkto' | 'crisp' | 'email';
+  enabled: boolean;
+  value: string;
+  label?: string;
+}
+
+export interface LiveChatSettings {
+  enabled: boolean;
+  title?: string;
+  welcomeText?: string;
+  channels: LiveChatChannel[];
+}
+
+export type AstroTemplateStyle =
+  | 'newyorker-light'
+  | 'nytimes-light'
+  | 'bbc-dark'
+  | 'obsidian-broadsheet'
+  | 'espresso-salon';
 
 export interface SiteIdentityConfig {
   siteTitle: string;
@@ -20,6 +39,7 @@ export interface SiteIdentityConfig {
   pagesUrl: string;
   githubOwner: string;
   githubRepo: string;
+  liveChat?: LiveChatSettings;
 }
 
 export const SITE_CONFIG: SiteIdentityConfig = {
@@ -32,9 +52,58 @@ export const SITE_CONFIG: SiteIdentityConfig = {
   "footerLinks": [],
   "authorName": "Hạ Vũ",
   "authorBio": "Một thoáng nhân gian há phải bận lòng !",
-  "themeMode": "dark",
-  "templateStyle": "visual-grid",
+  "themeMode": "light",
+  "templateStyle": "newyorker-light",
   "pagesUrl": "https://agripathlife.github.io",
   "githubOwner": "agripathlife",
-  "githubRepo": "agripathlife.github.io"
+  "githubRepo": "agripathlife.github.io",
+  "liveChat": {
+    "enabled": true,
+    "title": "Trò chuyện với tác giả",
+    "welcomeText": "Chọn kênh liên hệ trực tiếp bên dưới để nhắn tin nhanh.",
+    "channels": [
+      {
+        "id": "zalo",
+        "enabled": true,
+        "value": "0969711187",
+        "label": "Zalo"
+      },
+      {
+        "id": "messenger",
+        "enabled": false,
+        "value": "",
+        "label": "Messenger"
+      },
+      {
+        "id": "telegram",
+        "enabled": false,
+        "value": "",
+        "label": "Telegram"
+      },
+      {
+        "id": "whatsapp",
+        "enabled": false,
+        "value": "",
+        "label": "WhatsApp"
+      },
+      {
+        "id": "email",
+        "enabled": false,
+        "value": "",
+        "label": "Email"
+      },
+      {
+        "id": "tawkto",
+        "enabled": false,
+        "value": "",
+        "label": "Tawk.to Widget"
+      },
+      {
+        "id": "crisp",
+        "enabled": false,
+        "value": "",
+        "label": "Crisp Chat"
+      }
+    ]
+  }
 };

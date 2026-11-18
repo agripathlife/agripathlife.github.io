@@ -143,7 +143,9 @@ const homeJsonLd = {
   }
 
   :global(body[data-template='newyorker-light']) .masthead-tools {
-    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 780px;
   }
 
   .masthead-kicker {
@@ -172,37 +174,44 @@ const homeJsonLd = {
 
   .masthead-tools {
     margin-top: 22px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
     align-items: center;
+    width: 100%;
   }
 
   .search-input {
-    flex: 1 1 220px;
-    max-width: 420px;
-    min-width: 0;
+    display: block;
     width: 100%;
+    min-width: 0;
+    height: 44px;
     min-height: 44px;
+    max-height: 44px;
+    line-height: normal;
     padding: 0 14px;
     border-radius: 10px;
     border: 1px solid var(--border);
     background: var(--card);
     color: var(--text);
-    font-size: 0.9rem;
+    font-size: 0.92rem;
     font-family: inherit;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
   }
 
   .masthead-cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    height: 44px;
     min-height: 44px;
-    padding: 0 18px;
+    padding: 0 20px;
     border-radius: 10px;
     background: var(--accent);
     color: var(--accent-text);
-    font-size: 0.86rem;
+    font-size: 0.88rem;
     font-weight: 600;
     text-decoration: none !important;
     white-space: nowrap;
@@ -210,11 +219,17 @@ const homeJsonLd = {
 
   @media (max-width: 639px) {
     .masthead-tools {
-      flex-direction: column;
-      align-items: stretch;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
+      max-width: none;
+    }
+    .search-input {
+      width: 100%;
+      height: 44px;
     }
     .masthead-cta {
       width: 100%;
+      height: 44px;
     }
   }
 

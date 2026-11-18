@@ -1,16 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
-  <rect width="1200" height="630" fill="#161210"/>
+  <rect width="1200" height="630" fill="#FAF7F2"/>
   
-        <radialGradient id="lamp-3" cx="78%" cy="32%" r="48%">
-          <stop offset="0%" stop-color="#FBBF24" stop-opacity="0.28"/>
-          <stop offset="100%" stop-color="#161210" stop-opacity="0"/>
-        </radialGradient>
-        <rect width="1200" height="630" fill="url(#lamp-3)"/>
-        <circle cx="940" cy="220" r="95" fill="none" stroke="#FBBF24" stroke-width="1.5" opacity="0.5"/>
-        <path d="M845 310 C890 250, 990 250, 1035 310" fill="none" stroke="#E5A93C" stroke-width="2.5"/>
-  <text x="90" y="155" font-family="monospace" font-size="20" font-weight="700" letter-spacing="2" fill="#FBBF24">GHI CHÉP</text>
-  <text x="90" y="232" font-family="Georgia, serif" font-weight="700" font-size="38" fill="#F5EFE6"><tspan x="90" dy="0">Xây dựng nhịp thở đều đặn</tspan><tspan x="90" dy="48">qua từng đề mục bài viết</tspan></text>
-  <text x="90" y="346" font-family="sans-serif" font-size="22" fill="#D6CBC0">Blog của agripathlife · Salon Suy tư</text>
-  <line x1="90" y1="470" x2="1110" y2="470" stroke="#3B312B" stroke-width="1.5"/>
-  <text x="90" y="520" font-family="monospace" font-size="20" fill="#A39589">Hạ Vũ · Số 03/03</text>
+        <rect x="44" y="44" width="1112" height="542" fill="none" stroke="#DDD5C7" stroke-width="2"/>
+        <rect x="54" y="54" width="1092" height="522" fill="none" stroke="#DDD5C7" stroke-width="1"/>
+        <circle cx="960" cy="240" r="120" fill="#F2EDE4" stroke="#DDD5C7" stroke-width="1.5"/>
+        <path d="M900 295 Q960 170 1020 295" fill="none" stroke="#B91C1C" stroke-width="3"/>
+        <circle cx="960" cy="215" r="24" fill="#141414" opacity="0.88"/>
+  <text x="90" y="155" font-family="monospace" font-size="20" font-weight="700" letter-spacing="2" fill="#B91C1C">THƯ PHÒNG</text>
+  <text x="90" y="232" font-family="Georgia, serif" font-weight="700" font-size="38" fill="#141414"><tspan x="90" dy="0">Ghi chép bên tách cà phê</tspan><tspan x="90" dy="48">sáng và cuốn sổ tay bìa…</tspan></text>
+  <text x="90" y="346" font-family="sans-serif" font-size="22" fill="#3A352E">Blog của agripathlife · New Yorker Văn chương</text>
+  <line x1="90" y1="470" x2="1110" y2="470" stroke="#DDD5C7" stroke-width="1.5"/>
+  <text x="90" y="520" font-family="monospace" font-size="20" fill="#6E665A">Hạ Vũ · Số 03/03</text>
 </svg>

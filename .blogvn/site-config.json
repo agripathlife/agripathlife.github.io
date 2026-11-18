@@ -13,7 +13,7 @@
   "pagesUrl": "https://agripathlife.github.io",
   "themeMode": "dark",
   "postsDirectory": "src/content/bai_viet",
-  "astroTemplate": "obsidian-broadsheet",
+  "astroTemplate": "espresso-salon",
   "liveChat": {
     "enabled": false,
     "title": "Trò chuyện với tác giả",

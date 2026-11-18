@@ -1,18 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
-  <rect width="1200" height="630" fill="#0B0D12"/>
+  <rect width="1200" height="630" fill="#FAF7F2"/>
   
-        <defs>
-          <pattern id="grid-2" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#273043" stroke-width="0.8" opacity="0.45"/>
-          </pattern>
-        </defs>
-        <rect x="64" y="64" width="1072" height="502" fill="url(#grid-2)" stroke="#273043" stroke-width="1.5"/>
-        <circle cx="960" cy="250" r="110" fill="none" stroke="#60A5FA" stroke-width="2" opacity="0.65"/>
-        <circle cx="960" cy="250" r="64" fill="none" stroke="#60A5FA" stroke-width="1.5" stroke-dasharray="8 6"/>
-        <circle cx="960" cy="250" r="12" fill="#60A5FA"/>
-  <text x="90" y="155" font-family="monospace" font-size="20" font-weight="700" letter-spacing="2" fill="#60A5FA">LƯU TRỮ GIT</text>
-  <text x="90" y="232" font-family="Georgia, serif" font-weight="700" font-size="38" fill="#F3F4F6"><tspan x="90" dy="0">Lưu trữ trọn đời bằng tệp</tspan><tspan x="90" dy="48">văn bản thuần trên Git…</tspan></text>
-  <text x="90" y="346" font-family="sans-serif" font-size="22" fill="#CBD5E1">Blog của agripathlife · Broadsheet Đêm</text>
-  <line x1="90" y1="470" x2="1110" y2="470" stroke="#273043" stroke-width="1.5"/>
-  <text x="90" y="520" font-family="monospace" font-size="20" fill="#94A3B8">Hạ Vũ · Số 02/04</text>
+        <rect x="44" y="44" width="1112" height="542" fill="none" stroke="#DDD5C7" stroke-width="2"/>
+        <rect x="54" y="54" width="1092" height="522" fill="none" stroke="#DDD5C7" stroke-width="1"/>
+        <circle cx="960" cy="240" r="120" fill="#F2EDE4" stroke="#DDD5C7" stroke-width="1.5"/>
+        <path d="M900 295 Q960 170 1020 295" fill="none" stroke="#B91C1C" stroke-width="3"/>
+        <circle cx="960" cy="215" r="24" fill="#141414" opacity="0.88"/>
+  <text x="90" y="155" font-family="monospace" font-size="20" font-weight="700" letter-spacing="2" fill="#B91C1C">VĂN CHƯƠNG</text>
+  <text x="90" y="232" font-family="Georgia, serif" font-weight="700" font-size="38" fill="#141414"><tspan x="90" dy="0">Bàn về nhịp câu chữ trong</tspan><tspan x="90" dy="48">tạp chí văn chương hiện…</tspan></text>
+  <text x="90" y="346" font-family="sans-serif" font-size="22" fill="#3A352E">Blog của agripathlife · New Yorker Văn chương</text>
+  <line x1="90" y1="470" x2="1110" y2="470" stroke="#DDD5C7" stroke-width="1.5"/>
+  <text x="90" y="520" font-family="monospace" font-size="20" fill="#6E665A">Hạ Vũ · Số 02/03</text>
 </svg>

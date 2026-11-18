@@ -24,7 +24,8 @@ const fullTitle =
   title === SITE_CONFIG.siteTitle ? title : `${title} | ${SITE_CONFIG.siteTitle}`;
 const iconHref = withBase(SITE_CONFIG.siteIcon || '/favicon.svg');
 const ogImgHref = withBase(ogImage);
-const initialDark = SITE_CONFIG.themeMode === 'dark';
+const initialMode = SITE_CONFIG.themeMode === 'dark' ? 'dark' : 'light';
+const initialDark = initialMode === 'dark';
 const currentPath = Astro.url.pathname;
 const liveChat = SITE_CONFIG.liveChat;
 const activeChatChannels = (liveChat?.channels || []).filter(
@@ -42,7 +43,11 @@ function resolveChatHref(id: string, rawValue: string): string {
   if (id === 'zalo') return `https://zalo.me/${encodeURIComponent(val.replace(/^@/, ''))}`;
   if (id === 'messenger') return `https://m.me/${encodeURIComponent(val.replace(/^@/, ''))}`;
   if (id === 'telegram') return `https://t.me/${encodeURIComponent(val.replace(/^@/, ''))}`;
-  if (id === 'whatsapp') return `https://wa.me/${val.replace(/[^0-9]/g, '')}`;
+  if (id === 'whatsapp') {
+    const digits = val.replace(/[^0-9]/g, '');
+    const normalized = /^0\d{8,10}$/.test(digits) ? `84${digits.slice(1)}` : digits;
+    return `https://wa.me/${normalized}`;
+  }
   if (id === 'email') return `mailto:${val}`;
   return val;
 }
@@ -54,7 +59,7 @@ const mainNav = [
 ---
 
 <!doctype html>
-<html lang="vi" class={initialDark ? 'dark' : ''}>
+<html lang="vi" data-mode={initialMode} class={initialDark ? 'dark' : ''}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -62,6 +67,17 @@ const mainNav = [
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
     {canonical && <link rel="canonical" href={canonical} />}
+
+    <script is:inline define:vars={{ defaultMode: initialMode }}>
+      (function () {
+        try {
+          var saved = localStorage.getItem('daoky_theme_mode');
+          var mode = saved === 'dark' || saved === 'light' ? saved : defaultMode;
+          document.documentElement.setAttribute('data-mode', mode);
+          document.documentElement.classList.toggle('dark', mode === 'dark');
+        } catch (e) {}
+      })();
+    </script>
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
@@ -89,7 +105,7 @@ const mainNav = [
     <header class="site-header">
       <div class="wrap nav-inner">
         <a class="brand" href={withBase('/')}>
-          <img src={iconHref} alt={SITE_CONFIG.headerTitle} width="28" height="28" />
+          <img src={iconHref} alt={SITE_CONFIG.headerTitle} width="30" height="30" />
           <span>{SITE_CONFIG.headerTitle}</span>
         </a>
 
@@ -114,6 +130,21 @@ const mainNav = [
         </nav>
 
         <div class="nav-actions">
+          <button
+            id="themeToggleBtn"
+            class="icon-btn theme-toggle-btn"
+            type="button"
+            aria-label="Chuyển chế độ Sáng / Tối"
+            title="Chuyển chế độ Sáng / Tối"
+          >
+            <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+            </svg>
+            <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+            </svg>
+          </button>
           <a class="icon-btn" href={withBase('/rss.xml')} title="RSS Feed" aria-label="RSS Feed">
             RSS
           </a>
@@ -162,7 +193,7 @@ const mainNav = [
     </footer>
 
     {liveChat?.enabled && directChatChannels.length > 0 && (
-      <div id="blogvnLiveChat" class="livechat-dock">
+      <div id="daokyLiveChat" class="livechat-dock">
         <div id="livechatPanel" class="livechat-panel hidden" role="dialog" aria-label={liveChat.title || 'Live Chat'}>
           <div class="livechat-head">
             <div>
@@ -195,7 +226,15 @@ const mainNav = [
     )}
 
     {liveChat?.enabled && tawkChannel?.value && (
-      <script is:inline define:vars={{ tawkId: tawkChannel.value }}>
+      <script
+        is:inline
+        define:vars={{
+          tawkId: tawkChannel.value
+            .trim()
+            .replace(/^https?://embed.tawk.to//i, '')
+            .replace(/^/+/, ''),
+        }}
+      >
         var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
         (function () {
           var s1 = document.createElement('script'),
@@ -224,6 +263,18 @@ const mainNav = [
     )}
 
     <script is:inline>
+      const themeBtn = document.getElementById('themeToggleBtn');
+      if (themeBtn) {
+        themeBtn.addEventListener('click', () => {
+          const cur = document.documentElement.getAttribute('data-mode') === 'dark' ? 'dark' : 'light';
+          const next = cur === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-mode', next);
+          document.documentElement.classList.toggle('dark', next === 'dark');
+          try {
+            localStorage.setItem('daoky_theme_mode', next);
+          } catch (e) {}
+        });
+      }
       const mBtn = document.getElementById('mobileMenuBtn');
       const mDrawer = document.getElementById('mobileDrawer');
       if (mBtn && mDrawer) {
@@ -252,22 +303,22 @@ const mainNav = [
 
 <style is:global>
   :root {
-    --bg: #FAF7F2;
-    --surface: #F2EDE4;
-    --card: #FFFFFF;
-    --border: #DDD5C7;
-    --text: #141414;
-    --text-2: #3A352E;
-    --muted: #6E665A;
-    --accent: #141414;
-    --accent-text: #FAF7F2;
-    --link: #B91C1C;
+    --bg: #161210;
+    --surface: #201A17;
+    --card: #29221E;
+    --border: #3B312B;
+    --text: #F5EFE6;
+    --text-2: #D6CBC0;
+    --muted: #A39589;
+    --accent: #E5A93C;
+    --accent-text: #161210;
+    --link: #FBBF24;
     --font-display: 'Playfair Display', 'Fraunces', Georgia, serif;
     --font-body: 'Lora', Georgia, serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   }
 
-  body[data-template='newyorker-light'] {
+  html[data-mode='light'] body[data-template='newyorker-light'] {
     --bg: #FAF7F2;
     --surface: #F2EDE4;
     --card: #FFFFFF;
@@ -282,7 +333,22 @@ const mainNav = [
     --font-body: 'Lora', Georgia, serif;
   }
 
-  body[data-template='nytimes-light'] {
+  html[data-mode='dark'] body[data-template='newyorker-light'] {
+    --bg: #161411;
+    --surface: #201D18;
+    --card: #28241E;
+    --border: #3A332A;
+    --text: #F5EFE6;
+    --text-2: #D8CFC2;
+    --muted: #A19585;
+    --accent: #FAF7F2;
+    --accent-text: #161411;
+    --link: #F87171;
+    --font-display: 'Playfair Display', 'Fraunces', Georgia, serif;
+    --font-body: 'Lora', Georgia, serif;
+  }
+
+  html[data-mode='light'] body[data-template='nytimes-light'] {
     --bg: #FFFFFF;
     --surface: #F5F6F8;
     --card: #FFFFFF;
@@ -297,7 +363,37 @@ const mainNav = [
     --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   }
 
-  body[data-template='bbc-dark'] {
+  html[data-mode='dark'] body[data-template='nytimes-light'] {
+    --bg: #0E1218;
+    --surface: #161C26;
+    --card: #1D2432;
+    --border: #2C3548;
+    --text: #F8FAFC;
+    --text-2: #CBD5E1;
+    --muted: #94A3B8;
+    --accent: #F8FAFC;
+    --accent-text: #0E1218;
+    --link: #60A5FA;
+    --font-display: 'Fraunces', 'Playfair Display', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  html[data-mode='light'] body[data-template='bbc-dark'] {
+    --bg: #F6F7F9;
+    --surface: #EBEDF2;
+    --card: #FFFFFF;
+    --border: #D4D7DF;
+    --text: #111216;
+    --text-2: #374151;
+    --muted: #6B7280;
+    --accent: #E11D48;
+    --accent-text: #FFFFFF;
+    --link: #BE123C;
+    --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  html[data-mode='dark'] body[data-template='bbc-dark'] {
     --bg: #121214;
     --surface: #1A1B1F;
     --card: #22242A;
@@ -312,7 +408,22 @@ const mainNav = [
     --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   }
 
-  body[data-template='obsidian-broadsheet'] {
+  html[data-mode='light'] body[data-template='obsidian-broadsheet'] {
+    --bg: #F3F6FB;
+    --surface: #E6ECF5;
+    --card: #FFFFFF;
+    --border: #CBD5E1;
+    --text: #0F172A;
+    --text-2: #334155;
+    --muted: #64748B;
+    --accent: #0F172A;
+    --accent-text: #FFFFFF;
+    --link: #1D4ED8;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  html[data-mode='dark'] body[data-template='obsidian-broadsheet'] {
     --bg: #0B0D12;
     --surface: #131722;
     --card: #1A1F2E;
@@ -327,7 +438,22 @@ const mainNav = [
     --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   }
 
-  body[data-template='espresso-salon'] {
+  html[data-mode='light'] body[data-template='espresso-salon'] {
+    --bg: #FAF4EC;
+    --surface: #F1E7DA;
+    --card: #FFFFFF;
+    --border: #DECDB9;
+    --text: #261C15;
+    --text-2: #4E3E31;
+    --muted: #7D6A5A;
+    --accent: #9A5B13;
+    --accent-text: #FFFFFF;
+    --link: #B45309;
+    --font-display: 'Playfair Display', 'Fraunces', Georgia, serif;
+    --font-body: 'Lora', Georgia, serif;
+  }
+
+  html[data-mode='dark'] body[data-template='espresso-salon'] {
     --bg: #161210;
     --surface: #201A17;
     --card: #29221E;
@@ -350,6 +476,7 @@ const mainNav = [
   body {
     margin: 0;
     padding: 0;
+    overflow-x: hidden;
     background: var(--bg);
     color: var(--text);
     font-family: var(--font-body);
@@ -368,20 +495,16 @@ const mainNav = [
   }
 
   .wrap {
-    max-width: 1080px;
+    width: 100%;
+    max-width: 1120px;
     margin: 0 auto;
     padding: 0 20px;
   }
 
-  body[data-template='newyorker-light'] .wrap,
-  body[data-template='espresso-salon'] .wrap {
-    max-width: 900px;
-  }
-
-  body[data-template='nytimes-light'] .wrap,
-  body[data-template='obsidian-broadsheet'] .wrap,
-  body[data-template='bbc-dark'] .wrap {
-    max-width: 1180px;
+  @media (max-width: 639px) {
+    .wrap {
+      padding: 0 16px;
+    }
   }
 
   .site-header {
@@ -401,7 +524,7 @@ const mainNav = [
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 12px;
     min-height: 60px;
   }
 
@@ -409,17 +532,26 @@ const mainNav = [
     display: inline-flex;
     align-items: center;
     gap: 10px;
+    min-width: 0;
     color: var(--text);
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     letter-spacing: -0.02em;
     text-decoration: none !important;
   }
 
   .brand img {
-    border-radius: 6px;
+    border-radius: 9999px;
+    border: 1px solid var(--border);
     object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .brand span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .nav-links {
@@ -433,6 +565,7 @@ const mainNav = [
   .nav-links a {
     color: var(--text-2);
     text-decoration: none;
+    white-space: nowrap;
   }
 
   .nav-links a:hover,
@@ -445,6 +578,7 @@ const mainNav = [
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-shrink: 0;
   }
 
   .icon-btn,
@@ -453,7 +587,7 @@ const mainNav = [
     align-items: center;
     justify-content: center;
     min-height: 36px;
-    padding: 0 11px;
+    padding: 0 10px;
     border-radius: 8px;
     border: 1px solid var(--border);
     background: var(--surface);
@@ -463,6 +597,29 @@ const mainNav = [
     font-weight: 500;
     cursor: pointer;
     text-decoration: none !important;
+  }
+
+  .theme-toggle-btn {
+    min-width: 38px;
+    padding: 0;
+  }
+
+  .theme-toggle-btn .sun-icon {
+    display: none;
+    color: #f59e0b;
+  }
+
+  .theme-toggle-btn .moon-icon {
+    display: block;
+    color: var(--link);
+  }
+
+  html[data-mode='dark'] .theme-toggle-btn .sun-icon {
+    display: block;
+  }
+
+  html[data-mode='dark'] .theme-toggle-btn .moon-icon {
+    display: none;
   }
 
   .mobile-menu-btn {

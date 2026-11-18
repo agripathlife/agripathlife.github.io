@@ -226,7 +226,7 @@ const blogPostingJsonLd = {
   }
 
   .related-section {
-    max-width: 960px;
+    max-width: 1120px;
     margin: 48px auto 0;
     padding-top: 28px;
     border-top: 1px solid var(--border);
@@ -244,7 +244,13 @@ const blogPostingJsonLd = {
     gap: 18px;
   }
 
-  @media (min-width: 720px) {
+  @media (min-width: 640px) {
+    .related-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 960px) {
     .related-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
     }

@@ -1,4 +1,4 @@
-name: Build & Deploy Astro Blog (BlogVN)
+name: Build & Deploy Astro Blog (Đạo Ký)
 
 on:
   push:

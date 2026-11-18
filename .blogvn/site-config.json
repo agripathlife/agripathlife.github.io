@@ -13,7 +13,7 @@
   "pagesUrl": "https://agripathlife.github.io",
   "themeMode": "light",
   "postsDirectory": "src/content/bai_viet",
-  "astroTemplate": "newyorker-light",
+  "astroTemplate": "nytimes-light",
   "liveChat": {
     "enabled": false,
     "title": "Trò chuyện với tác giả",

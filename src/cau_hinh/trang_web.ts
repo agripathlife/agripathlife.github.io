@@ -53,7 +53,7 @@ export const SITE_CONFIG: SiteIdentityConfig = {
   "authorName": "Hạ Vũ",
   "authorBio": "Một thoáng nhân gian há phải bận lòng !",
   "themeMode": "light",
-  "templateStyle": "newyorker-light",
+  "templateStyle": "nytimes-light",
   "pagesUrl": "https://agripathlife.github.io",
   "githubOwner": "agripathlife",
   "githubRepo": "agripathlife.github.io",

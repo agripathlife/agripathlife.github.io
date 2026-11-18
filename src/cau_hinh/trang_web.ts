@@ -43,7 +43,7 @@ export interface SiteIdentityConfig {
 }
 
 export const SITE_CONFIG: SiteIdentityConfig = {
-  "siteTitle": "Blog của agripathlife",
+  "siteTitle": "Đạo ký của một phàm nhân",
   "tagline": "Nhật ký một gã khờ.",
   "siteIcon": "/favicon.png",
   "headerTitle": "Hạ Vũ",
@@ -58,7 +58,7 @@ export const SITE_CONFIG: SiteIdentityConfig = {
   "githubOwner": "agripathlife",
   "githubRepo": "agripathlife.github.io",
   "liveChat": {
-    "enabled": true,
+    "enabled": false,
     "title": "Trò chuyện với tác giả",
     "welcomeText": "Chọn kênh liên hệ trực tiếp bên dưới để nhắn tin nhanh.",
     "channels": [
@@ -70,7 +70,7 @@ export const SITE_CONFIG: SiteIdentityConfig = {
       },
       {
         "id": "messenger",
-        "enabled": true,
+        "enabled": false,
         "value": "m.me/huyenkhongthuquan",
         "label": "Messenger"
       },

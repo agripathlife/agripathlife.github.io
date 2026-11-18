@@ -1,16 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
-  <rect width="1200" height="630" fill="#161210"/>
+  <rect width="1200" height="630" fill="#FFFFFF"/>
   
-        <radialGradient id="lamp-1" cx="78%" cy="32%" r="48%">
-          <stop offset="0%" stop-color="#FBBF24" stop-opacity="0.28"/>
-          <stop offset="100%" stop-color="#161210" stop-opacity="0"/>
-        </radialGradient>
-        <rect width="1200" height="630" fill="url(#lamp-1)"/>
-        <circle cx="940" cy="220" r="95" fill="none" stroke="#FBBF24" stroke-width="1.5" opacity="0.5"/>
-        <path d="M845 310 C890 250, 990 250, 1035 310" fill="none" stroke="#E5A93C" stroke-width="2.5"/>
-  <text x="90" y="165" font-family="monospace" font-size="20" font-weight="700" letter-spacing="2" fill="#FBBF24">THƯ PHÒNG · SUY TƯ</text>
-  <text x="90" y="255" font-family="Georgia, serif" font-weight="700" font-size="44" fill="#F5EFE6">Những trang viết cuối ngày bên ánh đèn vàng ấm áp</text>
-  <text x="90" y="325" font-family="sans-serif" font-size="22" fill="#D6CBC0">Đạo ký của một phàm nhân · Salon Suy tư</text>
-  <line x1="90" y1="470" x2="1110" y2="470" stroke="#3B312B" stroke-width="1.5"/>
-  <text x="90" y="520" font-family="monospace" font-size="20" fill="#A39589">Hạ Vũ · Số 1/03</text>
+        <line x1="72" y1="88" x2="1128" y2="88" stroke="#0F172A" stroke-width="3"/>
+        <line x1="72" y1="96" x2="1128" y2="96" stroke="#D4D4D8" stroke-width="1"/>
+        <rect x="760" y="136" width="368" height="320" fill="#F5F6F8" stroke="#D4D4D8" stroke-width="1.5"/>
+        <line x1="790" y1="184" x2="1098" y2="184" stroke="#1E3A8A" stroke-width="4"/>
+        <line x1="790" y1="224" x2="1060" y2="224" stroke="#D4D4D8" stroke-width="2"/>
+        <line x1="790" y1="254" x2="1020" y2="254" stroke="#D4D4D8" stroke-width="2"/>
+        <line x1="790" y1="284" x2="1080" y2="284" stroke="#D4D4D8" stroke-width="2"/>
+  <text x="90" y="165" font-family="monospace" font-size="20" font-weight="700" letter-spacing="2" fill="#1E3A8A">TIÊU ĐIỂM · PHÂN TÍCH</text>
+  <text x="90" y="255" font-family="Georgia, serif" font-weight="700" font-size="44" fill="#0F172A">Vì sao các toà soạn lớn quay lại bố cục báo in rõ rà</text>
+  <text x="90" y="325" font-family="sans-serif" font-size="22" fill="#334155">Blog của agripathlife · NYTimes Nhật báo</text>
+  <line x1="90" y1="470" x2="1110" y2="470" stroke="#D4D4D8" stroke-width="1.5"/>
+  <text x="90" y="520" font-family="monospace" font-size="20" fill="#64748B">Hạ Vũ · Số 1/03</text>
 </svg>

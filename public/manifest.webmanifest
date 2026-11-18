@@ -1,11 +1,11 @@
 {
-  "name": "Đạo ký của một phàm nhân",
+  "name": "Blog của agripathlife",
   "short_name": "Hạ Vũ",
   "description": "Nhật ký một gã khờ.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#161210",
-  "theme_color": "#E5A93C",
+  "background_color": "#FFFFFF",
+  "theme_color": "#0F172A",
   "icons": [
     {
       "src": "./favicon.png",

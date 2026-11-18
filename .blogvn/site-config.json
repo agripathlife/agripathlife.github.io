@@ -11,9 +11,9 @@
   "githubOwner": "agripathlife",
   "githubRepo": "agripathlife.github.io",
   "pagesUrl": "https://agripathlife.github.io",
-  "themeMode": "light",
+  "themeMode": "dark",
   "postsDirectory": "src/content/bai_viet",
-  "astroTemplate": "nytimes-light",
+  "astroTemplate": "bbc-dark",
   "liveChat": {
     "enabled": false,
     "title": "Trò chuyện với tác giả",

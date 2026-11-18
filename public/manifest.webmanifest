@@ -4,8 +4,8 @@
   "description": "Nhật ký một gã khờ.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#FFFFFF",
-  "theme_color": "#0F172A",
+  "background_color": "#121214",
+  "theme_color": "#E11D48",
   "icons": [
     {
       "src": "./favicon.png",

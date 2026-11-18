@@ -1,16 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
-  <rect width="1200" height="630" fill="#FFFFFF"/>
+  <rect width="1200" height="630" fill="#121214"/>
   
-        <line x1="72" y1="88" x2="1128" y2="88" stroke="#0F172A" stroke-width="3"/>
-        <line x1="72" y1="96" x2="1128" y2="96" stroke="#D4D4D8" stroke-width="1"/>
-        <rect x="760" y="136" width="368" height="320" fill="#F5F6F8" stroke="#D4D4D8" stroke-width="1.5"/>
-        <line x1="790" y1="184" x2="1098" y2="184" stroke="#1E3A8A" stroke-width="4"/>
-        <line x1="790" y1="224" x2="1060" y2="224" stroke="#D4D4D8" stroke-width="2"/>
-        <line x1="790" y1="254" x2="1020" y2="254" stroke="#D4D4D8" stroke-width="2"/>
-        <line x1="790" y1="284" x2="1080" y2="284" stroke="#D4D4D8" stroke-width="2"/>
-  <text x="90" y="165" font-family="monospace" font-size="20" font-weight="700" letter-spacing="2" fill="#1E3A8A">TIÊU ĐIỂM · PHÂN TÍCH</text>
-  <text x="90" y="255" font-family="Georgia, serif" font-weight="700" font-size="44" fill="#0F172A">Vì sao các toà soạn lớn quay lại bố cục báo in rõ rà</text>
-  <text x="90" y="325" font-family="sans-serif" font-size="22" fill="#334155">Blog của agripathlife · NYTimes Nhật báo</text>
-  <line x1="90" y1="470" x2="1110" y2="470" stroke="#D4D4D8" stroke-width="1.5"/>
-  <text x="90" y="520" font-family="monospace" font-size="20" fill="#64748B">Hạ Vũ · Số 1/03</text>
+        <rect x="0" y="0" width="1200" height="10" fill="#E11D48"/>
+        <rect x="750" y="120" width="380" height="240" rx="14" fill="#1A1B1F" stroke="#2E313A" stroke-width="2"/>
+        <polygon points="920,205 920,275 980,240" fill="#E11D48"/>
+        <rect x="88" y="420" width="140" height="6" fill="#E11D48"/>
+  <text x="90" y="165" font-family="monospace" font-size="20" font-weight="700" letter-spacing="2" fill="#FB7185">THỜI SỰ · MEDIA</text>
+  <text x="90" y="255" font-family="Georgia, serif" font-weight="700" font-size="44" fill="#F4F4F5">Tổ chức trang tin đa phương tiện &amp; video YouTube sắc</text>
+  <text x="90" y="325" font-family="sans-serif" font-size="22" fill="#D4D4D8">Blog của agripathlife · BBC Studio</text>
+  <line x1="90" y1="470" x2="1110" y2="470" stroke="#2E313A" stroke-width="1.5"/>
+  <text x="90" y="520" font-family="monospace" font-size="20" fill="#A1A1AA">Hạ Vũ · Số 1/03</text>
 </svg>

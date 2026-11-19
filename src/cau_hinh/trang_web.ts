@@ -43,12 +43,12 @@ export interface SiteIdentityConfig {
 }
 
 export const SITE_CONFIG: SiteIdentityConfig = {
-  "siteTitle": "Trời Hạ giáng mưa vạn vật sinh sôi",
+  "siteTitle": "Một chút bình yên",
   "tagline": "Nhật ký một gã khờ.",
   "siteIcon": "/favicon.png",
   "headerTitle": "Đạo Ký",
   "headerNavLinks": [],
-  "footerText": "Thuận theo tự nhiên sống trọn nhân sinh !",
+  "footerText": "Thuận tự nhiên sống đời an yên !",
   "footerLinks": [],
   "authorName": "Hạ Vũ",
   "authorBio": "Một thoáng nhân gian đẹp biết bao !",

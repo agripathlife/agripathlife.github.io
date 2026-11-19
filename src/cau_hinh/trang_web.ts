@@ -43,15 +43,15 @@ export interface SiteIdentityConfig {
 }
 
 export const SITE_CONFIG: SiteIdentityConfig = {
-  "siteTitle": "Một chút bình yên.",
+  "siteTitle": "Trời Hạ giáng mưa vạn vật sinh sôi",
   "tagline": "Nhật ký một gã khờ.",
   "siteIcon": "/favicon.png",
-  "headerTitle": "Hạ Vũ",
+  "headerTitle": "Đạo Ký",
   "headerNavLinks": [],
   "footerText": "Thuận theo tự nhiên sống trọn nhân sinh !",
   "footerLinks": [],
   "authorName": "Hạ Vũ",
-  "authorBio": "Một thoáng nhân gian sao phải bận lòng !",
+  "authorBio": "Một thoáng nhân gian đẹp biết bao !",
   "themeMode": "light",
   "templateStyle": "newyorker-light",
   "pagesUrl": "https://agripathlife.github.io",

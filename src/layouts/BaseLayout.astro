@@ -58,10 +58,34 @@ function resolveChatHref(id: string, rawValue: string): string {
   return val;
 }
 
-const mainNav = [
-  { label: 'Trang nhất', href: withBase('/') },
-  { label: 'Kho bài viết', href: withBase('/bai-viet/') },
-];
+const cleanCurrent = currentPath.replace(/\/+$/, '') || '/';
+const homeClean = withBase('/').replace(/\/+$/, '') || '/';
+
+function isNavActive(targetHref: string): boolean {
+  const cleanTarget = targetHref.replace(/\/+$/, '') || '/';
+  if (cleanTarget === homeClean) return cleanCurrent === homeClean;
+  return cleanCurrent === cleanTarget || cleanCurrent.startsWith(`${cleanTarget}/`);
+}
+
+const mainNav = SITE_CONFIG.isMultiPage
+  ? [
+      { label: 'Trang nhất', href: withBase('/') },
+      { label: 'Chuyên mục', href: withBase('/chuyen-muc/') },
+      { label: 'Kho bài', href: withBase('/bai-viet/') },
+      { label: 'Lưu trữ', href: withBase('/luu-tru/') },
+      { label: 'Giới thiệu', href: withBase('/gioi-thieu/') },
+    ]
+  : [
+      { label: 'Trang nhất', href: withBase('/') },
+      { label: 'Kho bài viết', href: withBase('/bai-viet/') },
+    ];
+
+const drawerExtraNav = SITE_CONFIG.isMultiPage
+  ? [
+      { label: 'Chủ đề (#Tags)', href: withBase('/chu-de/') },
+      { label: 'Liên hệ & Chat', href: withBase('/lien-he/') },
+    ]
+  : [];
 ---
 
 <!doctype html>
@@ -103,7 +127,7 @@ const mainNav = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@400;500&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -119,7 +143,7 @@ const mainNav = [
           {mainNav.map((item) => (
             <a
               href={item.href}
-              class={currentPath === item.href ? 'active' : ''}
+              class={isNavActive(item.href) ? 'active' : ''}
             >
               {item.label}
             </a>
@@ -165,6 +189,9 @@ const mainNav = [
           {mainNav.map((item) => (
             <a href={item.href}>{item.label}</a>
           ))}
+          {drawerExtraNav.map((item) => (
+            <a href={item.href}>{item.label}</a>
+          ))}
           {SITE_CONFIG.headerNavLinks.map((link) => (
             <a href={withBase(link.url)}>{link.label}</a>
           ))}
@@ -183,7 +210,17 @@ const mainNav = [
           <p class="footer-sub">Tác giả: {SITE_CONFIG.authorName}</p>
         </div>
         <div class="footer-links">
-          <a href={withBase('/bai-viet/')}>Kho bài viết</a>
+          {SITE_CONFIG.isMultiPage ? (
+            <>
+              <a href={withBase('/chuyen-muc/')}>Chuyên mục</a>
+              <a href={withBase('/chu-de/')}>Chủ đề</a>
+              <a href={withBase('/luu-tru/')}>Lưu trữ</a>
+              <a href={withBase('/gioi-thieu/')}>Giới thiệu</a>
+              <a href={withBase('/lien-he/')}>Liên hệ</a>
+            </>
+          ) : (
+            <a href={withBase('/bai-viet/')}>Kho bài viết</a>
+          )}
           <a href={withBase('/rss.xml')}>RSS</a>
           {SITE_CONFIG.footerLinks.map((link) => (
             <a
@@ -301,18 +338,18 @@ const mainNav = [
 
 <style is:global>
   :root {
-    --bg: #FAF7F2;
-    --surface: #F2EDE4;
+    --bg: #F8F6F0;
+    --surface: #EFECE3;
     --card: #FFFFFF;
-    --border: #DDD5C7;
-    --text: #141414;
-    --text-2: #3A352E;
-    --muted: #6E665A;
-    --accent: #141414;
-    --accent-text: #FAF7F2;
-    --link: #B91C1C;
-    --font-display: 'Playfair Display', 'Fraunces', Georgia, serif;
-    --font-body: 'Lora', Georgia, serif;
+    --border: #D7D0C3;
+    --text: #1A1D1A;
+    --text-2: #3D423D;
+    --muted: #676E66;
+    --accent: #14532D;
+    --accent-text: #F8F6F0;
+    --link: #166534;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   }
 
@@ -466,6 +503,156 @@ const mainNav = [
     --font-body: 'Lora', Georgia, serif;
   }
 
+  html[data-mode='light'] body[data-template='monocle-magazine'] {
+    --bg: #F8F6F0;
+    --surface: #EFECE3;
+    --card: #FFFFFF;
+    --border: #D7D0C3;
+    --text: #1A1D1A;
+    --text-2: #3D423D;
+    --muted: #676E66;
+    --accent: #14532D;
+    --accent-text: #F8F6F0;
+    --link: #166534;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  html[data-mode='dark'] body[data-template='monocle-magazine'] {
+    --bg: #111613;
+    --surface: #19211C;
+    --card: #212B25;
+    --border: #2E3B33;
+    --text: #F2F4F1;
+    --text-2: #CED6CF;
+    --muted: #92A096;
+    --accent: #86EFAC;
+    --accent-text: #0F1A14;
+    --link: #4ADE80;
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  html[data-mode='light'] body[data-template='guardian-portal'] {
+    --bg: #FFFFFF;
+    --surface: #F3F5F8;
+    --card: #FFFFFF;
+    --border: #D5DCE6;
+    --text: #121826;
+    --text-2: #334155;
+    --muted: #64748B;
+    --accent: #0B2A5B;
+    --accent-text: #FFFFFF;
+    --link: #B91C1C;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  html[data-mode='dark'] body[data-template='guardian-portal'] {
+    --bg: #0B111E;
+    --surface: #131C2E;
+    --card: #1A253B;
+    --border: #293754;
+    --text: #F8FAFC;
+    --text-2: #CBD5E1;
+    --muted: #94A3B8;
+    --accent: #38BDF8;
+    --accent-text: #081221;
+    --link: #F87171;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  html[data-mode='light'] body[data-template='kyoto-folio'] {
+    --bg: #FBF9F5;
+    --surface: #F0ECE4;
+    --card: #FFFFFF;
+    --border: #DCD4C8;
+    --text: #1C1917;
+    --text-2: #44403C;
+    --muted: #78716C;
+    --accent: #9A3412;
+    --accent-text: #FBF9F5;
+    --link: #9A3412;
+    --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+    --font-body: 'Lora', Georgia, serif;
+  }
+
+  html[data-mode='dark'] body[data-template='kyoto-folio'] {
+    --bg: #161412;
+    --surface: #211D1A;
+    --card: #2A2521;
+    --border: #3C352F;
+    --text: #F5F2ED;
+    --text-2: #D6D0C8;
+    --muted: #A8A29E;
+    --accent: #FDBA74;
+    --accent-text: #1C140F;
+    --link: #FB923C;
+    --font-display: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+    --font-body: 'Lora', Georgia, serif;
+  }
+
+  html[data-mode='light'] body[data-template='economist-digest'] {
+    --bg: #F7F8FA;
+    --surface: #ECEEF3;
+    --card: #FFFFFF;
+    --border: #D1D5DB;
+    --text: #111827;
+    --text-2: #374151;
+    --muted: #6B7280;
+    --accent: #B91C1C;
+    --accent-text: #FFFFFF;
+    --link: #B91C1C;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  html[data-mode='dark'] body[data-template='economist-digest'] {
+    --bg: #101218;
+    --surface: #181B24;
+    --card: #202430;
+    --border: #2E3445;
+    --text: #F3F4F6;
+    --text-2: #D1D5DB;
+    --muted: #9CA3AF;
+    --accent: #E11D48;
+    --accent-text: #FFFFFF;
+    --link: #FB7185;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  html[data-mode='light'] body[data-template='nordic-atlas'] {
+    --bg: #F2F6F7;
+    --surface: #E4ECEE;
+    --card: #FFFFFF;
+    --border: #C6D4D8;
+    --text: #0F1C21;
+    --text-2: #2D4249;
+    --muted: #5C737B;
+    --accent: #0F766E;
+    --accent-text: #FFFFFF;
+    --link: #0F766E;
+    --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'Lora', Georgia, serif;
+  }
+
+  html[data-mode='dark'] body[data-template='nordic-atlas'] {
+    --bg: #0D1317;
+    --surface: #141E24;
+    --card: #1B2830;
+    --border: #293B46;
+    --text: #EDF2F4;
+    --text-2: #C5D3D9;
+    --muted: #889DA6;
+    --accent: #2DD4BF;
+    --accent-text: #0A1416;
+    --link: #2DD4BF;
+    --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'Lora', Georgia, serif;
+  }
+
   * {
     box-sizing: border-box;
   }
@@ -518,6 +705,12 @@ const mainNav = [
     border-bottom: 3px double var(--border);
   }
 
+  body[data-template='monocle-magazine'] .site-header,
+  body[data-template='guardian-portal'] .site-header,
+  body[data-template='economist-digest'] .site-header {
+    border-top: 3px solid var(--accent);
+  }
+
   .nav-inner {
     display: flex;
     align-items: center;
@@ -555,8 +748,8 @@ const mainNav = [
   .nav-links {
     display: none;
     align-items: center;
-    gap: 22px;
-    font-size: 0.9rem;
+    gap: 18px;
+    font-size: 0.88rem;
     font-weight: 500;
   }
 
@@ -564,12 +757,18 @@ const mainNav = [
     color: var(--text-2);
     text-decoration: none;
     white-space: nowrap;
+    padding: 4px 0;
+    border-bottom: 2px solid transparent;
   }
 
   .nav-links a:hover,
   .nav-links a.active {
     color: var(--text);
     font-weight: 600;
+  }
+
+  .nav-links a.active {
+    border-bottom-color: var(--accent);
   }
 
   .nav-actions {
@@ -649,7 +848,7 @@ const mainNav = [
     padding: 6px 0;
   }
 
-  @media (min-width: 820px) {
+  @media (min-width: 880px) {
     .nav-links {
       display: flex;
     }
@@ -711,7 +910,8 @@ const mainNav = [
   }
 
   body[data-template='newyorker-light'] .prose > p:first-of-type::first-letter,
-  body[data-template='espresso-salon'] .prose > p:first-of-type::first-letter {
+  body[data-template='espresso-salon'] .prose > p:first-of-type::first-letter,
+  body[data-template='kyoto-folio'] .prose > p:first-of-type::first-letter {
     float: left;
     font-family: var(--font-display);
     font-size: 3.4rem;

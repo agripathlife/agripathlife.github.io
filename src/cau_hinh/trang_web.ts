@@ -22,7 +22,12 @@ export type AstroTemplateStyle =
   | 'nytimes-light'
   | 'bbc-dark'
   | 'obsidian-broadsheet'
-  | 'espresso-salon';
+  | 'espresso-salon'
+  | 'monocle-magazine'
+  | 'guardian-portal'
+  | 'kyoto-folio'
+  | 'economist-digest'
+  | 'nordic-atlas';
 
 export interface SiteIdentityConfig {
   siteTitle: string;
@@ -36,6 +41,7 @@ export interface SiteIdentityConfig {
   authorBio: string;
   themeMode: 'light' | 'dark';
   templateStyle: AstroTemplateStyle;
+  isMultiPage: boolean;
   pagesUrl: string;
   githubOwner: string;
   githubRepo: string;
@@ -43,7 +49,7 @@ export interface SiteIdentityConfig {
 }
 
 export const SITE_CONFIG: SiteIdentityConfig = {
-  "siteTitle": "Một chút bình yên",
+  "siteTitle": "Blog của agripathlife",
   "tagline": "Nhật ký một gã khờ.",
   "siteIcon": "/favicon.png",
   "headerTitle": "Đạo Ký",
@@ -53,7 +59,8 @@ export const SITE_CONFIG: SiteIdentityConfig = {
   "authorName": "Hạ Vũ",
   "authorBio": "Một thoáng nhân gian đẹp biết bao !",
   "themeMode": "light",
-  "templateStyle": "newyorker-light",
+  "templateStyle": "monocle-magazine",
+  "isMultiPage": true,
   "pagesUrl": "https://agripathlife.github.io",
   "githubOwner": "agripathlife",
   "githubRepo": "agripathlife.github.io",

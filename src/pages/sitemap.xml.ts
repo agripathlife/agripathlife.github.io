@@ -1,7 +1,14 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { SITE_CONFIG } from '../cau_hinh/trang_web';
-import { getPostDate, getPostSlug, withBase } from '../utils/url';
+import {
+  getPostCategorySlug,
+  getPostDate,
+  getPostSlug,
+  getPostTags,
+  slugifyVi,
+  withBase,
+} from '../utils/url';
 
 function escXml(str: string): string {
   return String(str || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -13,11 +20,33 @@ export const GET: APIRoute = async ({ site }) => {
     (e) => !e.data.nhap && !e.data.draft && !e.data.noindex
   );
 
-  const staticRoutes = ['/', '/bai-viet/'];
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const staticRoutes = [
+    '/',
+    '/bai-viet/',
+    '/chuyen-muc/',
+    '/chu-de/',
+    '/luu-tru/',
+    '/gioi-thieu/',
+    '/lien-he/',
+  ];
+  const categorySlugs = Array.from(new Set(posts.map((p) => getPostCategorySlug(p))));
+  const tagSlugs = Array.from(
+    new Set(posts.flatMap((p) => getPostTags(p).map((t) => slugifyVi(t))))
+  );
+
   const urls = [
     ...staticRoutes.map((r) => ({
       loc: `${origin}${withBase(r)}`,
-      lastmod: new Date().toISOString().slice(0, 10),
+      lastmod: todayStr,
+    })),
+    ...categorySlugs.map((slug) => ({
+      loc: `${origin}${withBase(`/chuyen-muc/${slug}/`)}`,
+      lastmod: todayStr,
+    })),
+    ...tagSlugs.map((slug) => ({
+      loc: `${origin}${withBase(`/chu-de/${slug}/`)}`,
+      lastmod: todayStr,
     })),
     ...posts.map((p) => ({
       loc: `${origin}${withBase(`/bai-viet/${getPostSlug(p)}/`)}`,

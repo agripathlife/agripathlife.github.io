@@ -1,14 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
-  <rect width="1200" height="630" fill="#FAF7F2"/>
+  <rect width="1200" height="630" fill="#F8F6F0"/>
   
-        <rect x="44" y="44" width="1112" height="542" fill="none" stroke="#DDD5C7" stroke-width="2"/>
-        <rect x="54" y="54" width="1092" height="522" fill="none" stroke="#DDD5C7" stroke-width="1"/>
-        <circle cx="960" cy="240" r="120" fill="#F2EDE4" stroke="#DDD5C7" stroke-width="1.5"/>
-        <path d="M900 295 Q960 170 1020 295" fill="none" stroke="#B91C1C" stroke-width="3"/>
-        <circle cx="960" cy="215" r="24" fill="#141414" opacity="0.88"/>
-  <text x="90" y="155" font-family="monospace" font-size="20" font-weight="700" letter-spacing="2" fill="#B91C1C">TIỂU LUẬN · VĂN HOÁ</text>
-  <text x="90" y="232" font-family="Georgia, serif" font-weight="700" font-size="38" fill="#141414"><tspan x="90" dy="0">Nghệ thuật giữ tâm trí</tspan><tspan x="90" dy="48">tĩnh tại giữa dòng tin tứ…</tspan></text>
-  <text x="90" y="346" font-family="sans-serif" font-size="22" fill="#3A352E">Blog của agripathlife · New Yorker Văn chương</text>
-  <line x1="90" y1="470" x2="1110" y2="470" stroke="#DDD5C7" stroke-width="1.5"/>
-  <text x="90" y="520" font-family="monospace" font-size="20" fill="#6E665A">Hạ Vũ · Số 01/03</text>
+        <rect x="0" y="0" width="1200" height="14" fill="#14532D"/>
+        <rect x="56" y="64" width="1088" height="502" fill="none" stroke="#D7D0C3" stroke-width="1.5"/>
+        <rect x="780" y="128" width="300" height="310" rx="8" fill="#EFECE3" stroke="#D7D0C3" stroke-width="1.5"/>
+        <circle cx="930" cy="240" r="68" fill="none" stroke="#14532D" stroke-width="2.5"/>
+        <circle cx="930" cy="240" r="18" fill="#14532D"/>
+        <line x1="820" y1="365" x2="1040" y2="365" stroke="#D7D0C3" stroke-width="2"/>
+  <text x="90" y="155" font-family="monospace" font-size="20" font-weight="700" letter-spacing="2" fill="#166534">TIÊU ĐIỂM · BIÊN TẬP</text>
+  <text x="90" y="232" font-family="Georgia, serif" font-weight="700" font-size="38" fill="#1A1D1A"><tspan x="90" dy="0">Kiến trúc tạp chí nhiều</tspan><tspan x="90" dy="48">trang cho ấn phẩm cá nhân…</tspan></text>
+  <text x="90" y="346" font-family="sans-serif" font-size="22" fill="#3D423D">Blog của agripathlife · Monocle Đa trang</text>
+  <line x1="90" y1="470" x2="1110" y2="470" stroke="#D7D0C3" stroke-width="1.5"/>
+  <text x="90" y="520" font-family="monospace" font-size="20" fill="#676E66">Hạ Vũ · Số 01/06</text>
 </svg>

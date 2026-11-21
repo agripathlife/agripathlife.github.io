@@ -1,15 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
-  <rect width="1200" height="630" fill="#F8F6F0"/>
+  <rect width="1200" height="630" fill="#0D1317"/>
   
-        <rect x="0" y="0" width="1200" height="14" fill="#14532D"/>
-        <rect x="56" y="64" width="1088" height="502" fill="none" stroke="#D7D0C3" stroke-width="1.5"/>
-        <rect x="780" y="128" width="300" height="310" rx="8" fill="#EFECE3" stroke="#D7D0C3" stroke-width="1.5"/>
-        <circle cx="930" cy="240" r="68" fill="none" stroke="#14532D" stroke-width="2.5"/>
-        <circle cx="930" cy="240" r="18" fill="#14532D"/>
-        <line x1="820" y1="365" x2="1040" y2="365" stroke="#D7D0C3" stroke-width="2"/>
-  <text x="90" y="155" font-family="monospace" font-size="20" font-weight="700" letter-spacing="2" fill="#166534">VĂN HOÁ &amp; DU KÝ</text>
-  <text x="90" y="232" font-family="Georgia, serif" font-weight="700" font-size="38" fill="#1A1D1A"><tspan x="90" dy="0">Thư từ phương xa: Một buổi</tspan><tspan x="90" dy="48">sáng tại hiệu sách độc lậ…</tspan></text>
-  <text x="90" y="346" font-family="sans-serif" font-size="22" fill="#3D423D">Blog của agripathlife · Monocle Đa trang</text>
-  <line x1="90" y1="470" x2="1110" y2="470" stroke="#D7D0C3" stroke-width="1.5"/>
-  <text x="90" y="520" font-family="monospace" font-size="20" fill="#676E66">Hạ Vũ · Số 04/06</text>
+        <defs>
+          <pattern id="atlas-4" width="48" height="48" patternUnits="userSpaceOnUse">
+            <circle cx="24" cy="24" r="1.2" fill="#293B46"/>
+          </pattern>
+        </defs>
+        <rect x="56" y="56" width="1088" height="518" fill="url(#atlas-4)" stroke="#293B46" stroke-width="1.2"/>
+        <path d="M770 370 L890 190 L965 290 L1020 225 L1100 370 Z" fill="#141E24" stroke="#2DD4BF" stroke-width="2"/>
+        <circle cx="1015" cy="145" r="24" fill="none" stroke="#2DD4BF" stroke-width="2"/>
+  <text x="90" y="155" font-family="monospace" font-size="20" font-weight="700" letter-spacing="2" fill="#2DD4BF">DU KÝ · BẮC ÂU</text>
+  <text x="90" y="232" font-family="Georgia, serif" font-weight="700" font-size="38" fill="#EDF2F4"><tspan x="90" dy="0">Những ngày đi bộ đường dài</tspan><tspan x="90" dy="48">và thói quen viết vội bên…</tspan></text>
+  <text x="90" y="346" font-family="sans-serif" font-size="22" fill="#C5D3D9">Blog của agripathlife · Nordic Atlas</text>
+  <line x1="90" y1="470" x2="1110" y2="470" stroke="#293B46" stroke-width="1.5"/>
+  <text x="90" y="520" font-family="monospace" font-size="20" fill="#889DA6">Hạ Vũ · Số 04/06</text>
 </svg>

@@ -20,6 +20,19 @@ export const GET: APIRoute = async ({ site }) => {
     (e) => !e.data.nhap && !e.data.draft && !e.data.noindex
   );
 
+  let projects: any[] = [];
+  let books: any[] = [];
+  let shop: any[] = [];
+  try {
+    projects = (await getCollection('du_an')).filter((e) => !e.data.nhap && !e.data.draft);
+  } catch {}
+  try {
+    books = (await getCollection('sach')).filter((e) => !e.data.nhap && !e.data.draft);
+  } catch {}
+  try {
+    shop = (await getCollection('cua_hang')).filter((e) => !e.data.nhap && !e.data.draft);
+  } catch {}
+
   const todayStr = new Date().toISOString().slice(0, 10);
   const staticRoutes = [
     '/',
@@ -29,6 +42,9 @@ export const GET: APIRoute = async ({ site }) => {
     '/luu-tru/',
     '/gioi-thieu/',
     '/lien-he/',
+    ...(projects.length > 0 ? ['/du-an/'] : []),
+    ...(books.length > 0 ? ['/sach/'] : []),
+    ...(shop.length > 0 ? ['/cua-hang/'] : []),
   ];
   const categorySlugs = Array.from(new Set(posts.map((p) => getPostCategorySlug(p))));
   const tagSlugs = Array.from(
@@ -50,6 +66,10 @@ export const GET: APIRoute = async ({ site }) => {
     })),
     ...posts.map((p) => ({
       loc: `${origin}${withBase(`/bai-viet/${getPostSlug(p)}/`)}`,
+      lastmod: getPostDate(p),
+    })),
+    ...projects.map((p) => ({
+      loc: `${origin}${withBase(`/du-an/${getPostSlug(p)}/`)}`,
       lastmod: getPostDate(p),
     })),
   ];

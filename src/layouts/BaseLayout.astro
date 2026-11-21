@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import { SITE_CONFIG } from '../cau_hinh/trang_web';
 import { withBase } from '../utils/url';
 
@@ -27,6 +28,8 @@ const ogImgHref = withBase(ogImage);
 const initialMode = SITE_CONFIG.themeMode === 'dark' ? 'dark' : 'light';
 const initialDark = initialMode === 'dark';
 const currentPath = Astro.url.pathname;
+const analyticsProvider = SITE_CONFIG.analyticsProvider || 'none';
+const analyticsId = (SITE_CONFIG.analyticsId || '').trim();
 const liveChat = SITE_CONFIG.liveChat;
 const activeChatChannels = (liveChat?.channels || []).filter(
   (ch) => ch.enabled && ch.value && ch.value.trim().length > 0
@@ -67,17 +70,38 @@ function isNavActive(targetHref: string): boolean {
   return cleanCurrent === cleanTarget || cleanCurrent.startsWith(`${cleanTarget}/`);
 }
 
+let hasProjects = false;
+let hasBooks = false;
+let hasShop = false;
+try {
+  hasProjects = (await getCollection('du_an')).some((e) => !e.data.nhap && !e.data.draft);
+} catch {}
+try {
+  hasBooks = (await getCollection('sach')).some((e) => !e.data.nhap && !e.data.draft);
+} catch {}
+try {
+  hasShop = (await getCollection('cua_hang')).some((e) => !e.data.nhap && !e.data.draft);
+} catch {}
+
+const extraCollectionNav = [
+  ...(hasProjects ? [{ label: 'Dự án', href: withBase('/du-an/') }] : []),
+  ...(hasBooks ? [{ label: 'Sách', href: withBase('/sach/') }] : []),
+  ...(hasShop ? [{ label: 'Cửa hàng', href: withBase('/cua-hang/') }] : []),
+];
+
 const mainNav = SITE_CONFIG.isMultiPage
   ? [
       { label: 'Trang nhất', href: withBase('/') },
       { label: 'Chuyên mục', href: withBase('/chuyen-muc/') },
       { label: 'Kho bài', href: withBase('/bai-viet/') },
+      ...extraCollectionNav,
       { label: 'Lưu trữ', href: withBase('/luu-tru/') },
       { label: 'Giới thiệu', href: withBase('/gioi-thieu/') },
     ]
   : [
       { label: 'Trang nhất', href: withBase('/') },
       { label: 'Kho bài viết', href: withBase('/bai-viet/') },
+      ...extraCollectionNav,
     ];
 
 const drawerExtraNav = SITE_CONFIG.isMultiPage
@@ -108,6 +132,27 @@ const drawerExtraNav = SITE_CONFIG.isMultiPage
         } catch (e) {}
       })();
     </script>
+
+    {analyticsProvider === 'ga4' && analyticsId && (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(analyticsId)}`}></script>
+        <script is:inline define:vars={{ gaId: analyticsId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', gaId);
+        </script>
+      </>
+    )}
+    {analyticsProvider === 'cloudflare' && analyticsId && (
+      <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: analyticsId })}></script>
+    )}
+    {analyticsProvider === 'plausible' && analyticsId && (
+      <script defer data-domain={analyticsId} src="https://plausible.io/js/script.js"></script>
+    )}
+    {analyticsProvider === 'umami' && analyticsId && (
+      <script defer src="https://cloud.umami.is/script.js" data-website-id={analyticsId}></script>
+    )}
 
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
@@ -308,6 +353,13 @@ const drawerExtraNav = SITE_CONFIG.isMultiPage
           try {
             localStorage.setItem('daoky_theme_mode', next);
           } catch (e) {}
+          const giscusFrame = document.querySelector('iframe.giscus-frame');
+          if (giscusFrame && giscusFrame.contentWindow) {
+            giscusFrame.contentWindow.postMessage(
+              { giscus: { setConfig: { theme: next } } },
+              'https://giscus.app'
+            );
+          }
         });
       }
       const mBtn = document.getElementById('mobileMenuBtn');
@@ -332,24 +384,96 @@ const drawerExtraNav = SITE_CONFIG.isMultiPage
           });
         }
       }
+
+      document.querySelectorAll('.prose pre').forEach((preEl) => {
+        if (preEl.classList.contains('mermaid')) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'dk-copy-btn';
+        btn.textContent = 'Sao chép';
+        btn.addEventListener('click', () => {
+          const codeEl = preEl.querySelector('code');
+          const txt = codeEl ? codeEl.textContent || '' : preEl.textContent || '';
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(txt).then(() => {
+              btn.textContent = 'Đã chép';
+              window.setTimeout(() => {
+                btn.textContent = 'Sao chép';
+              }, 1600);
+            }).catch(() => {});
+          }
+        });
+        preEl.appendChild(btn);
+      });
+
+      const proseBlocks = document.querySelectorAll('.prose');
+      let needsKatex = false;
+      proseBlocks.forEach((el) => {
+        if (el.textContent && el.textContent.includes('$')) {
+          needsKatex = true;
+        }
+      });
+      if (needsKatex) {
+        const kCss = document.createElement('link');
+        kCss.rel = 'stylesheet';
+        kCss.href = 'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css';
+        document.head.appendChild(kCss);
+        const kJs = document.createElement('script');
+        kJs.src = 'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js';
+        kJs.onload = () => {
+          const kAuto = document.createElement('script');
+          kAuto.src = 'https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js';
+          kAuto.onload = () => {
+            if (typeof window.renderMathInElement === 'function') {
+              proseBlocks.forEach((el) => {
+                window.renderMathInElement(el, {
+                  delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false },
+                  ],
+                  throwOnError: false,
+                });
+              });
+            }
+          };
+          document.head.appendChild(kAuto);
+        };
+        document.head.appendChild(kJs);
+      }
+
+      if (document.querySelectorAll('.mermaid').length > 0) {
+        const mScript = document.createElement('script');
+        mScript.src = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js';
+        mScript.onload = () => {
+          if (window.mermaid) {
+            const isDarkMode = document.documentElement.getAttribute('data-mode') === 'dark';
+            window.mermaid.initialize({
+              startOnLoad: false,
+              theme: isDarkMode ? 'dark' : 'default',
+            });
+            window.mermaid.run();
+          }
+        };
+        document.head.appendChild(mScript);
+      }
     </script>
   </body>
 </html>
 
 <style is:global>
   :root {
-    --bg: #F8F6F0;
-    --surface: #EFECE3;
-    --card: #FFFFFF;
-    --border: #D7D0C3;
-    --text: #1A1D1A;
-    --text-2: #3D423D;
-    --muted: #676E66;
-    --accent: #14532D;
-    --accent-text: #F8F6F0;
-    --link: #166534;
-    --font-display: 'Playfair Display', Georgia, serif;
-    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --bg: #0D1317;
+    --surface: #141E24;
+    --card: #1B2830;
+    --border: #293B46;
+    --text: #EDF2F4;
+    --text-2: #C5D3D9;
+    --muted: #889DA6;
+    --accent: #2DD4BF;
+    --accent-text: #0A1416;
+    --link: #2DD4BF;
+    --font-display: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-body: 'Lora', Georgia, serif;
     --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   }
 
@@ -955,7 +1079,8 @@ const drawerExtraNav = SITE_CONFIG.isMultiPage
   }
 
   .prose pre {
-    padding: 1rem;
+    position: relative;
+    padding: 1.1rem;
     border-radius: 10px;
     overflow-x: auto;
     background: var(--surface);
@@ -975,6 +1100,100 @@ const drawerExtraNav = SITE_CONFIG.isMultiPage
   .prose pre code {
     background: transparent;
     padding: 0;
+  }
+
+  .dk-copy-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    padding: 4px 10px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text-2);
+    cursor: pointer;
+    opacity: 0.85;
+  }
+
+  .dk-copy-btn:hover {
+    opacity: 1;
+    border-color: var(--link);
+    color: var(--text);
+  }
+
+  .prose blockquote.dk-callout {
+    font-family: var(--font-body);
+    font-style: normal;
+    font-size: 1rem;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--link);
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 0.95rem 1.15rem;
+  }
+
+  .prose blockquote.dk-callout-tip {
+    border-left-color: #10b981;
+  }
+
+  .prose blockquote.dk-callout-important {
+    border-left-color: #8b5cf6;
+  }
+
+  .prose blockquote.dk-callout-warning {
+    border-left-color: #f59e0b;
+  }
+
+  .prose blockquote.dk-callout-caution {
+    border-left-color: #ef4444;
+  }
+
+  .dk-callout-title {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .dk-video-embed {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    margin: 1.5rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: #000;
+  }
+
+  .dk-video-embed iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
+  .dk-mermaid-box {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    overflow-x: auto;
+  }
+
+  .dk-mermaid-box pre.mermaid {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    text-align: center;
   }
 
   .livechat-dock {

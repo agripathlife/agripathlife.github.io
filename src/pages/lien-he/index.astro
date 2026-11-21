@@ -60,7 +60,7 @@ const rssUrl = `${SITE_CONFIG.pagesUrl.replace(/\/+$/, '')}${withBase('/rss.xml'
       </section>
 
       <section class="contact-card">
-        <h2>Theo dõi qua RSS & GitHub</h2>
+        <h2>Theo dõi qua RSS</h2>
         <p class="card-note">
           Thêm địa chỉ RSS vào trình đọc tin ưa thích (Feedly, NetNewsWire, Reeder) để nhận bài mới không qua thuật toán.
         </p>
@@ -69,14 +69,6 @@ const rssUrl = `${SITE_CONFIG.pagesUrl.replace(/\/+$/, '')}${withBase('/rss.xml'
         </div>
         <div class="rss-actions">
           <a class="btn-rss" href={withBase('/rss.xml')}>Mở RSS Feed</a>
-          <a
-            class="btn-gh"
-            href={`https://github.com/${SITE_CONFIG.githubOwner}/${SITE_CONFIG.githubRepo}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Kho nguồn GitHub ↗
-          </a>
         </div>
       </section>
     </div>
@@ -181,8 +173,7 @@ const rssUrl = `${SITE_CONFIG.pagesUrl.replace(/\/+$/, '')}${withBase('/rss.xml'
     flex-wrap: wrap;
     gap: 10px;
   }
-  .btn-rss,
-  .btn-gh {
+  .btn-rss {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -193,14 +184,7 @@ const rssUrl = `${SITE_CONFIG.pagesUrl.replace(/\/+$/, '')}${withBase('/rss.xml'
     font-weight: 600;
     text-decoration: none !important;
     white-space: nowrap;
-  }
-  .btn-rss {
     background: var(--accent);
     color: var(--accent-text);
-  }
-  .btn-gh {
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
   }
 </style>

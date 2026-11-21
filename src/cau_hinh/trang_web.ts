@@ -17,6 +17,14 @@ export interface LiveChatSettings {
   channels: LiveChatChannel[];
 }
 
+export interface GiscusSettings {
+  enabled: boolean;
+  repo: string;
+  repoId: string;
+  category: string;
+  categoryId: string;
+}
+
 export type AstroTemplateStyle =
   | 'newyorker-light'
   | 'nytimes-light'
@@ -43,8 +51,10 @@ export interface SiteIdentityConfig {
   templateStyle: AstroTemplateStyle;
   isMultiPage: boolean;
   pagesUrl: string;
-  githubOwner: string;
-  githubRepo: string;
+  customDomain?: string;
+  analyticsProvider?: 'none' | 'ga4' | 'cloudflare' | 'plausible' | 'umami';
+  analyticsId?: string;
+  giscus?: GiscusSettings;
   liveChat?: LiveChatSettings;
 }
 
@@ -58,12 +68,20 @@ export const SITE_CONFIG: SiteIdentityConfig = {
   "footerLinks": [],
   "authorName": "Hạ Vũ",
   "authorBio": "Một thoáng nhân gian đẹp biết bao !",
-  "themeMode": "light",
-  "templateStyle": "monocle-magazine",
+  "themeMode": "dark",
+  "templateStyle": "nordic-atlas",
   "isMultiPage": true,
   "pagesUrl": "https://agripathlife.github.io",
-  "githubOwner": "agripathlife",
-  "githubRepo": "agripathlife.github.io",
+  "customDomain": "",
+  "analyticsProvider": "none",
+  "analyticsId": "",
+  "giscus": {
+    "enabled": false,
+    "repo": "",
+    "repoId": "",
+    "category": "Announcements",
+    "categoryId": ""
+  },
   "liveChat": {
     "enabled": false,
     "title": "Trò chuyện với tác giả",

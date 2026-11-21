@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
-  <rect width="1200" height="630" fill="#0D1317"/>
-  <rect x="48" y="48" width="1104" height="534" rx="16" fill="#141E24" stroke="#293B46" stroke-width="2"/>
-  <text x="96" y="190" font-family="monospace" font-size="20" fill="#2DD4BF">NORDIC ATLAS</text>
-  <text x="96" y="280" font-family="Georgia, serif" font-weight="700" font-size="58" fill="#EDF2F4">Blog của agripathlife</text>
-  <text x="96" y="355" font-family="sans-serif" font-size="26" fill="#C5D3D9">Nhật ký một gã khờ.</text>
-  <line x1="96" y1="450" x2="1104" y2="450" stroke="#293B46" stroke-width="1"/>
-  <text x="96" y="510" font-family="monospace" font-size="22" fill="#889DA6">Hạ Vũ · Ấn phẩm Blog</text>
+  <rect width="1200" height="630" fill="#FFFFFF"/>
+  <rect x="48" y="48" width="1104" height="534" rx="16" fill="#F3F5F8" stroke="#D5DCE6" stroke-width="2"/>
+  <text x="96" y="190" font-family="monospace" font-size="20" fill="#B91C1C">GUARDIAN CỔNG TIN</text>
+  <text x="96" y="280" font-family="Georgia, serif" font-weight="700" font-size="58" fill="#121826">Blog của agripathlife</text>
+  <text x="96" y="355" font-family="sans-serif" font-size="26" fill="#334155">Nhật ký một gã khờ.</text>
+  <line x1="96" y1="450" x2="1104" y2="450" stroke="#D5DCE6" stroke-width="1"/>
+  <text x="96" y="510" font-family="monospace" font-size="22" fill="#64748B">Hạ Vũ · Ấn phẩm Blog</text>
 </svg>

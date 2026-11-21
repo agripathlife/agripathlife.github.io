@@ -11,59 +11,66 @@
   "githubOwner": "agripathlife",
   "githubRepo": "agripathlife.github.io",
   "pagesUrl": "https://agripathlife.github.io",
-  "themeMode": "dark",
+  "themeMode": "light",
   "postsDirectory": "src/content/bai_viet",
-  "astroTemplate": "nordic-atlas",
+  "astroTemplate": "guardian-portal",
   "liveChat": {
     "welcomeText": "Chọn kênh liên hệ trực tiếp bên dưới để nhắn tin nhanh.",
     "title": "Trò chuyện với tác giả",
     "channels": [
       {
-        "id": "zalo",
-        "value": "0969711187",
         "enabled": false,
+        "value": "0969711187",
+        "id": "zalo",
         "label": "Zalo"
       },
       {
-        "value": "m.me/huyenkhongthuquan",
         "label": "Messenger",
         "id": "messenger",
+        "value": "m.me/huyenkhongthuquan",
         "enabled": false
       },
       {
         "label": "Telegram",
+        "value": "",
         "id": "telegram",
-        "enabled": false,
-        "value": ""
+        "enabled": false
       },
       {
-        "enabled": false,
-        "value": "",
+        "label": "WhatsApp",
         "id": "whatsapp",
-        "label": "WhatsApp"
-      },
-      {
         "value": "",
-        "label": "Email",
-        "id": "email",
         "enabled": false
       },
       {
         "value": "",
-        "id": "tawkto",
+        "label": "Email",
         "enabled": false,
-        "label": "Tawk.to Widget"
+        "id": "email"
+      },
+      {
+        "label": "Tawk.to Widget",
+        "enabled": false,
+        "id": "tawkto",
+        "value": ""
       },
       {
         "value": "",
         "enabled": false,
-        "id": "crisp",
-        "label": "Crisp Chat"
+        "label": "Crisp Chat",
+        "id": "crisp"
       }
     ],
     "enabled": false
   },
   "authorAvatar": "https://avatars.githubusercontent.com/u/246151016?v=4",
   "analyticsProvider": "none",
-  "analyticsId": ""
+  "analyticsId": "",
+  "giscus": {
+    "categoryId": "",
+    "category": "Announcements",
+    "repoId": "",
+    "repo": "",
+    "enabled": false
+  }
 }

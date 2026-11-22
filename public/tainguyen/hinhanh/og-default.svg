@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
-  <rect width="1200" height="630" fill="#F2F6F7"/>
-  <rect x="48" y="48" width="1104" height="534" rx="16" fill="#E4ECEE" stroke="#D2D7D9" stroke-width="2"/>
-  <text x="96" y="190" font-family="monospace" font-size="20" fill="#0D9488">GUARDIAN CỔNG TIN</text>
-  <text x="96" y="280" font-family="Georgia, serif" font-weight="700" font-size="58" fill="#0F1C21">Blog của agripathlife</text>
-  <text x="96" y="355" font-family="sans-serif" font-size="26" fill="#414C50">Nhật ký một gã khờ.</text>
-  <line x1="96" y1="450" x2="1104" y2="450" stroke="#D2D7D9" stroke-width="1"/>
-  <text x="96" y="510" font-family="monospace" font-size="22" fill="#757E81">Hạ Vũ · Ấn phẩm Blog</text>
+  <rect width="1200" height="630" fill="#F8F6F0"/>
+  <rect x="48" y="48" width="1104" height="534" rx="16" fill="#EFECE3" stroke="#D7D0C3" stroke-width="2"/>
+  <text x="96" y="190" font-family="monospace" font-size="20" fill="#166534">MONOCLE ĐA TRANG</text>
+  <text x="96" y="280" font-family="Georgia, serif" font-weight="700" font-size="58" fill="#1A1D1A">Blog của agripathlife</text>
+  <text x="96" y="355" font-family="sans-serif" font-size="26" fill="#3D423D">Nhật ký một gã khờ.</text>
+  <line x1="96" y1="450" x2="1104" y2="450" stroke="#D7D0C3" stroke-width="1"/>
+  <text x="96" y="510" font-family="monospace" font-size="22" fill="#676E66">Hạ Vũ · Ấn phẩm Blog</text>
 </svg>

@@ -83,23 +83,7 @@ export const SITE_CONFIG: SiteIdentityConfig = {
   "authorName": "Hạ Vũ",
   "authorBio": "Một thoáng nhân gian đẹp biết bao !",
   "themeMode": "light",
-  "templateStyle": "guardian-portal",
-  "themeColors": {
-    "light": {
-      "canvas": "#F2F6F7",
-      "surface": "#E4ECEE",
-      "textPrimary": "#0F1C21",
-      "accent": "#0F766E",
-      "link": "#0D9488"
-    },
-    "dark": {
-      "canvas": "#0D1317",
-      "surface": "#141E24",
-      "textPrimary": "#EDF2F4",
-      "accent": "#2DD4BF",
-      "link": "#5EEAD4"
-    }
-  },
+  "templateStyle": "monocle-magazine",
   "isMultiPage": true,
   "pagesUrl": "https://agripathlife.github.io",
   "customDomain": "",

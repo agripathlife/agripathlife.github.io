@@ -13,7 +13,7 @@
   "pagesUrl": "https://agripathlife.github.io",
   "themeMode": "light",
   "postsDirectory": "src/content/bai_viet",
-  "astroTemplate": "guardian-portal",
+  "astroTemplate": "monocle-magazine",
   "liveChat": {
     "enabled": false,
     "title": "Trò chuyện với tác giả",
@@ -71,21 +71,5 @@
     "repoId": "",
     "category": "Announcements",
     "categoryId": ""
-  },
-  "themeColors": {
-    "light": {
-      "canvas": "#F2F6F7",
-      "surface": "#E4ECEE",
-      "textPrimary": "#0F1C21",
-      "accent": "#0F766E",
-      "link": "#0D9488"
-    },
-    "dark": {
-      "canvas": "#0D1317",
-      "surface": "#141E24",
-      "textPrimary": "#EDF2F4",
-      "accent": "#2DD4BF",
-      "link": "#5EEAD4"
-    }
   }
 }

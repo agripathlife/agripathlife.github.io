@@ -37,6 +37,19 @@ export type AstroTemplateStyle =
   | 'economist-digest'
   | 'nordic-atlas';
 
+export interface ThemeModeColorOverrides {
+  canvas?: string;
+  surface?: string;
+  textPrimary?: string;
+  accent?: string;
+  link?: string;
+}
+
+export interface ThemeCustomColors {
+  light?: ThemeModeColorOverrides;
+  dark?: ThemeModeColorOverrides;
+}
+
 export interface SiteIdentityConfig {
   siteTitle: string;
   tagline: string;
@@ -49,6 +62,7 @@ export interface SiteIdentityConfig {
   authorBio: string;
   themeMode: 'light' | 'dark';
   templateStyle: AstroTemplateStyle;
+  themeColors?: ThemeCustomColors;
   isMultiPage: boolean;
   pagesUrl: string;
   customDomain?: string;
@@ -70,6 +84,22 @@ export const SITE_CONFIG: SiteIdentityConfig = {
   "authorBio": "Một thoáng nhân gian đẹp biết bao !",
   "themeMode": "light",
   "templateStyle": "guardian-portal",
+  "themeColors": {
+    "light": {
+      "canvas": "#F2F6F7",
+      "surface": "#E4ECEE",
+      "textPrimary": "#0F1C21",
+      "accent": "#0F766E",
+      "link": "#0D9488"
+    },
+    "dark": {
+      "canvas": "#0D1317",
+      "surface": "#141E24",
+      "textPrimary": "#EDF2F4",
+      "accent": "#2DD4BF",
+      "link": "#5EEAD4"
+    }
+  },
   "isMultiPage": true,
   "pagesUrl": "https://agripathlife.github.io",
   "customDomain": "",

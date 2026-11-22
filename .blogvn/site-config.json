@@ -15,62 +15,77 @@
   "postsDirectory": "src/content/bai_viet",
   "astroTemplate": "guardian-portal",
   "liveChat": {
-    "welcomeText": "Chọn kênh liên hệ trực tiếp bên dưới để nhắn tin nhanh.",
+    "enabled": false,
     "title": "Trò chuyện với tác giả",
+    "welcomeText": "Chọn kênh liên hệ trực tiếp bên dưới để nhắn tin nhanh.",
     "channels": [
       {
+        "id": "zalo",
         "enabled": false,
         "value": "0969711187",
-        "id": "zalo",
         "label": "Zalo"
       },
       {
-        "label": "Messenger",
         "id": "messenger",
+        "enabled": false,
         "value": "m.me/huyenkhongthuquan",
-        "enabled": false
+        "label": "Messenger"
       },
       {
-        "label": "Telegram",
-        "value": "",
         "id": "telegram",
-        "enabled": false
+        "enabled": false,
+        "value": "",
+        "label": "Telegram"
       },
       {
-        "label": "WhatsApp",
         "id": "whatsapp",
+        "enabled": false,
         "value": "",
-        "enabled": false
+        "label": "WhatsApp"
       },
       {
-        "value": "",
-        "label": "Email",
+        "id": "email",
         "enabled": false,
-        "id": "email"
+        "value": "",
+        "label": "Email"
       },
       {
-        "label": "Tawk.to Widget",
-        "enabled": false,
         "id": "tawkto",
-        "value": ""
+        "enabled": false,
+        "value": "",
+        "label": "Tawk.to Widget"
       },
       {
-        "value": "",
+        "id": "crisp",
         "enabled": false,
-        "label": "Crisp Chat",
-        "id": "crisp"
+        "value": "",
+        "label": "Crisp Chat"
       }
-    ],
-    "enabled": false
+    ]
   },
   "authorAvatar": "https://avatars.githubusercontent.com/u/246151016?v=4",
   "analyticsProvider": "none",
-  "analyticsId": "",
   "giscus": {
-    "categoryId": "",
-    "category": "Announcements",
-    "repoId": "",
+    "enabled": false,
     "repo": "",
-    "enabled": false
+    "repoId": "",
+    "category": "Announcements",
+    "categoryId": ""
+  },
+  "themeColors": {
+    "light": {
+      "canvas": "#F2F6F7",
+      "surface": "#E4ECEE",
+      "textPrimary": "#0F1C21",
+      "accent": "#0F766E",
+      "link": "#0D9488"
+    },
+    "dark": {
+      "canvas": "#0D1317",
+      "surface": "#141E24",
+      "textPrimary": "#EDF2F4",
+      "accent": "#2DD4BF",
+      "link": "#5EEAD4"
+    }
   }
 }

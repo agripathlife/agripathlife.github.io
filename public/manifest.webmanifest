@@ -1,11 +1,12 @@
 {
+  "id": "./",
   "name": "Blog của agripathlife",
   "short_name": "Đạo Ký",
   "description": "Nhật ký một gã khờ.",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#FFFFFF",
-  "theme_color": "#0B2A5B",
+  "background_color": "#F2F6F7",
+  "theme_color": "#F2F6F7",
   "icons": [
     {
       "src": "./favicon.png",
